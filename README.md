@@ -20,7 +20,8 @@ This repository holds various sub projects:
   -   MATSim
   -   SUMO
   -   CARLA
-- An examplary wrapper for simulating wireless communication: OMNeT++ with the Veins IEEE 802.11p models
+- An examplary wrapper for simulating wireless communication: 
+  - OMNeT++ with the Veins IEEE 802.11p models
 - Base wrappers that can be used to craft wrappers for additional simulators:
   - C++
   - Java
