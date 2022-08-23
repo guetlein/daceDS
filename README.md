@@ -16,10 +16,10 @@ This repository holds various sub projects:
 - The simulation service backend and some related utilities
 - The simulation service web frontend
 - Exemplary wrappers for traffic/mobility simulations
--   PTV Visum
--   MATSim
--   SUMO
--   CARLA
+  -   PTV Visum
+  -   MATSim
+  -   SUMO
+  -   CARLA
 - An examplary wrapper for simulating wireless communication: OMNeT++ with the Veins IEEE 802.11p models
 - Base wrappers that can be used to craft wrappers for additional simulators:
   - C++
