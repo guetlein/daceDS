@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Sep 30 14:54:08 2021
-
-@author: guetlein
+Mainly copied from the carla docs
 """
 
 import sys

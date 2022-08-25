@@ -20,7 +20,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import eu.fau.cs7.daceDS.Component.ConsumerCallback;
 
 public interface ConsumerCallbackImplKafka extends ConsumerCallback {
-//	<T>  void receive(String topic, String key, T o, long timestamp);
 	<T>  void receive(ConsumerRecord r, long time, int epoch);
 
 }
