@@ -8,7 +8,7 @@ It provides a simulation service with a web frontend that enables to combine var
 
 
 ## Features
-- Data-centric coupling approach with stereotypical datamodels
+- Data-centric coupling approach powered by stereotypical datamodels 
 - Pub/Sub communication
 - Loose couplings
 - Accessible interfaces
