@@ -35,7 +35,6 @@
 * inherited by a wrapper for a tool that is categorized as 
 * traffic.micro.
 */
-//todo: split into layer (in)dependent parts
 
 #include "api/Provision.h"
 
