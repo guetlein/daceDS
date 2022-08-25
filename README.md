@@ -1,3 +1,5 @@
+<img src="Docs/img/daceDS.png" width="75%" />
+
 # daceDS
 daceDS is a **da**ta-**ce**ntric **D**istributed **S**imulation framework that focuses on data and loose coupling between tools. 
 It comprises the connection of simulators, the integrating of data sources, the provision of data & interaction interfaces for external components, as well as the orchestration of simulation runs. All communication is realized via a topic-based publish/subscribe paradigm on top of Apache Kafka. 
