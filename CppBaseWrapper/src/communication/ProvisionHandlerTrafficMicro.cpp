@@ -20,7 +20,6 @@ bool ProvisionHandlerTrafficMicro::handle(ConsumedMessage* msg) {
 
     ProvisionHandler::handle(msg);
     
-    //todo: this is layer specific
     if (pmeta.meta.channelSpecific.find("edge") != std::string::npos) {
         DS_BASE_DBG("Received traffic with key: " << msg->key);
         datamodel::Micro micro = AvroHelper::getInstance()->decodeMicro("payload", msg->payload, msg->len);

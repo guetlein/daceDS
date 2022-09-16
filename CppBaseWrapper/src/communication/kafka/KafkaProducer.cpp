@@ -230,7 +230,7 @@ bool KafkaProducer::publish(std::string topic, std::string key, std::string payl
                 };
             }
             t = topicMap[topic];
-            //todo: fixed to partition=0
+            //currently fixed to partition=0
             RdKafka::ErrorCode resp;
             RdKafka::Headers *headers = RdKafka::Headers::create();
             headers->add("sender", "sumo");

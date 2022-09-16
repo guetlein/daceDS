@@ -66,15 +66,13 @@ public class TimeSync implements ConsumerCallbackImplKafka {
 		topics.add(Config.get("channelOrchestration") + "." + scenarioID + "." + Config.get("topicSyncMsg"));
 		reader.init(topics, (ConsumerCallback)this);
 		logger.info("TimeClient up and runnning with "+noParticipants+" participants!");
-		// todo: instead of polling upon time advance, may be faster to subscribe in
-		// seperate thread
 	}
 
 	public static boolean timeAdvance(long targettime) {
 		return timeAdvance(targettime, 0);
 	}
 
-	//todo: keep in mind: we are receiving our own messages with the current library!
+	// keep in mind: we may receive our own messages with the current library!
 	public static boolean timeAdvance(long targettime, int targetepoch) {
 //		long targettime = localtime + step;
 //		System.out.println("timeAdvance() to " + targettime + "." + targetepoch + ", while lbts=" + lbts+ " lbep=" + lbep);
@@ -136,7 +134,6 @@ public class TimeSync implements ConsumerCallbackImplKafka {
 //		logger.info("targetTime=" + targetTime+", actualTime=" + actualTime + ", targetEpoch=" + targetEpoch + ", actualEpoch=" + actualEpoch);
 //		logger.info("timeOK=" + ((targetTime == actualTime && targetEpoch <= actualEpoch) || (targetTime < actualTime)));
 		return (targetTime == actualTime && targetEpoch <= actualEpoch) || (targetTime < actualTime);
-		//todo: use noParticipants and epochs
 	}
 	static boolean receivedMsgsOK(){
 		HashMap<String, Long> received = ConsumerImplKafka.getReceivedCounting();

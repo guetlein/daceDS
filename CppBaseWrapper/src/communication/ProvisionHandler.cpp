@@ -23,8 +23,6 @@ bool ProvisionHandler::handle(ConsumedMessage* msg) {
     ProvisionTopicMetadata pmeta = AvroHelper::getInstance()->getProvisionTopicMetadata(meta);
     DS_BASE_DBG("Got msg in KafkaProvisionConsumer: " << pmeta.meta.channelSpecific << " on topic " << msg->topic);
 
-    //todo: this is layer independent
-    //todo: topicResult -> resourceFile
     //parse different packages depending on topic
     if (pmeta.meta.channelSpecific == "scenario") {
         DS_BASE_DBG("Got scenario description");

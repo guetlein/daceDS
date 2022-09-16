@@ -131,7 +131,7 @@ bool SumoObserver::observeEdge() {
     bool succ = true;
     KDEBUG("observeEdge");
     //get recent entity names and apply filters
-    //todo: do this only once - edges are persistent
+    //we might also do this only once - edges are persistent
     std::vector<string> subjects = sumoConnection->edge->getIDList();
     // std::cout << observeTime << ": observing "<< subjects.size() << "edges"<<std::endl;
     filterEntities(subjects);
@@ -155,7 +155,6 @@ bool SumoObserver::observeEdge() {
         } else if (observer.element == "edge.speed") {
             succ = send<double>(edgeID, sumoConnection->edge->getSpeed(edgeID));
         }
-        //todo: similar keyword _outgoing with additional ghosting etc...?
         else if (observer.element == "edge.vehicles") {
             std::vector<datamodel::Micro> vehicles = sumoConnection->edge->getVehicles(edgeID);
             if(observer.trigger == "not_empty" && vehicles.size()==0){
@@ -560,23 +559,23 @@ bool SumoObserver::sendAsJSON(std::string topic, std::string key, datamodel::Mic
 }
 
 bool SumoObserver::sendAsAvro(std::string topic, std::string key, std::string value) {
-    return producer->publish(topic, key, value, observeTime, repeatOnError);  //todo: plain string or avro serialized string?
+    return producer->publish(topic, key, value, observeTime, repeatOnError); 
 }
 
 bool SumoObserver::sendAsAvro(std::string topic, std::string key, std::vector<std::string> value) {
     std::vector<char> encoded = AvroHelper::getInstance()->encodeBaseType(value);
-    return producer->publish(topic, key, encoded, observeTime, repeatOnError);  //todo: plain string or avro serialized string?
+    return producer->publish(topic, key, encoded, observeTime, repeatOnError);  
 }
 
 bool SumoObserver::sendAsAvro(std::string topic, std::string key, std::vector<double> value) {
     std::vector<char> encoded = AvroHelper::getInstance()->encodeBaseType(value);
-    return producer->publish(topic, key, encoded, observeTime, repeatOnError);  //todo: plain string or avro serialized string?
+    return producer->publish(topic, key, encoded, observeTime, repeatOnError);  
 }
 
 // bool SumoObserver::sendAsAvro(std::string topic, std::string key, std::vector<datamodel::Micro> value) {
 //     //std::vector<char> encoded = AvroHelper::getInstance()->encodeListMicro(value);
 //     std::vector<char> encoded = AvroHelper::getInstance()->encodeMicroList(value);
-//     return producer->publish(topic, key, encoded, observeTime, repeatOnError);  //todo: plain string or avro serialized string?
+//     return producer->publish(topic, key, encoded, observeTime, repeatOnError);  
 // }
 
 bool SumoObserver::sendAsAvro(std::string topic, std::string key, double value) {

@@ -66,7 +66,6 @@ void daceDS::OppWrapper::init(){
     provisionConsumer = std::make_shared<KafkaConsumer>(provisionHandler, true);
     // string t1 = Config::getInstance()->getInteractionTopic(DOMAIN_COMMUNICATION, LAYER_11P, simulatorID, Config::getInstance()->get(CONFIG_OPP_TOPIC_SEND));
     // string t1 = "interaction.simulation."+scenarioID+".communication.11p."+simulatorID+".msg.send";
-    // todo: important question: which vehicles do we want to include?
     // listen to all instances in the micro layer
     // string t2 = "^" + Config::getInstance()->getProvisionTopic(DOMAIN_TRAFFIC, LAYER_MICRO, "([^.]+)", "vehicle"); //match all instances
     // string t2 = "^provision.simulation."+scenarioID+".traffic.micro.([^.]+).vehicle"; //match all instances
@@ -97,7 +96,6 @@ void daceDS::OppWrapper::handlePositionUpdate(int64_t t , int64_t st, std::strin
 }
 
 void daceDS::OppWrapper::handleTopicSendRadioMsg(daceDS::datamodel::RadioMsg msg){
-    //todo:: in this whole mode updates only per step
     KDEBUG("unreadsendMsgRequests.push_back(msg) from sender=" << msg.sender);
     unreadsendMsgRequests.push_back(msg);
 }

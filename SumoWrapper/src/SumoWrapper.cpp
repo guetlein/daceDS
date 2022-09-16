@@ -224,7 +224,6 @@ void daceDS::SumoWrapper::runWrapper() {
         filter += outgoingLink;
     }
     
-    //todo: wie machen wir das jetzt genau?
     // //only if we have at least one entry
     // if(filter.size()>0){
     //     datamodel::Observer o;

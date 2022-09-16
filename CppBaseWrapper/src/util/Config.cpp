@@ -135,7 +135,7 @@ std::string Config::getProvisionTopic(std::string c) {
            ".traffic.micro." + c;
 }
 
-// //todo: use this for all getTopic methods
+
 // //if subject is persistent we can use include the id in the topic
 // std::string Config::getPersistentTopic(std::string subject, std::string entityId, std::string attribute) {
 //     KDEBUG("subject=" << subject);

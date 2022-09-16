@@ -192,21 +192,19 @@ public class Config
 		return Config.get(CHANNEL_PROVISION)+"."+ scenarioID+".result";
 	}
 
-	//todo: everything else
+	//todo: escape everything else
 	public static String escapeSpecialChars(String topic) {
 		return topic.replaceAll("\\.", "---2e");
 	}	
-
-	//todo: everything else
 	public static String deescapeSpecialChars(String topic) {
 		return topic.replaceAll("---2e", ".");
 	}	
 	
-	//todo: move to file
 	public static Properties getProperties(String groupID, boolean offsetLatest) {
 		return getProperties(groupID, offsetLatest, false);
 	}
-	
+
+	//todo: externalize to file
 	public static Properties getProperties(String groupID, boolean offsetLatest, boolean plainStringValue) {
 		Properties kafkaProps = new Properties();
 		kafkaProps.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
@@ -235,14 +233,15 @@ public class Config
 		return kafkaProps;
 	}
 
-	//todo: move to file
 	public static Properties getProducerProperties(String id) {
 		return getProducerProperties(id, false, false);
 	}
 	public static Properties getProducerProperties(String id, boolean exactlyOnce) {
 		return getProducerProperties(id, exactlyOnce, false);
 	}
-		public static Properties getProducerProperties(String id, boolean exactlyOnce, boolean plainStringValue) {
+
+	//todo: externalize to file
+	public static Properties getProducerProperties(String id, boolean exactlyOnce, boolean plainStringValue) {
 		Properties kafkaProducerProps = new Properties();
 		kafkaProducerProps.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, Config.get(Config.SCHEMA_REGISTRY));	   
 		kafkaProducerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Config.get(Config.KAFKA_BROKER));

@@ -27,9 +27,7 @@ bool InteractionHandlerTrafficMicro::handle(ConsumedMessage* msg) {
 
     KDBGCB("Got msg on topic " << msg->topic);
 
-    //todo: when to process a message that lies between to simulator timesteps
-    // -> probably late processing would be better
-
+    // when to process a message that lies between to simulator timesteps?
     // //if timestamp is in future, then put in buffer
     // if(msg.timestamp > timeSync.getLBTSinMs()){
     //     buffer.push_back(msg);
@@ -267,7 +265,7 @@ void InteractionHandler::parseScopeBase(ConsumedMessage& msg, InteractionTopicMe
 // }
 
 
-//todo: this is super ugly, just for demo purposes
+//todo: this is not so nice, just for demo purposes
 void InteractionHandlerTrafficMicro::parseScopeVehicle(ConsumedMessage* msg, InteractionTopicMetadata2& imeta) {
     std::string vehicleID = msg->key;
     KDBGCB("msg->key is " << msg->key);

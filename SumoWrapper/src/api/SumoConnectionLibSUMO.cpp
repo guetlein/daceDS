@@ -342,14 +342,6 @@ bool SumoConnectionLibSUMO::adopt(double time, datamodel::Micro vehicle) {
             speedStr = "max"; // sim standard
         }
 
-        //bringt uns garnix, weil wir danach ja moveto noch brauchen        
-        // if ( position < 0){
-        //     posStr = "base"; // sim standard
-        // }
-        // if ( vehicle.lane < 0){
-        //     laneStr = "best"; // sim standard
-        // }
-
         DSTRAFFIC_TRANSFER_DBG("adding vehicle " << vehID << ": rid=" << routeID << ", type="<<vehicle.type<<", departLane="<<laneStr<<", departPos="<<posStr<< ", speed=" << speedStr);
 
         libsumo::Vehicle::add(vehID, routeID, vehicle.type, "now", laneStr, posStr , speedStr);

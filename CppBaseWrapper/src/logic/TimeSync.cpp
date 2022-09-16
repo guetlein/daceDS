@@ -73,7 +73,7 @@ void TimeSync::handleTopicSyncMsgRequest(datamodel::SyncMsg s) {
 }
 
 void TimeSync::handleTopicSyncMsgJoin(datamodel::SyncMsg syncMsg) {
-    handleTopicSyncMsgRequest(syncMsg);  //todo
+    handleTopicSyncMsgRequest(syncMsg);  
 }
 
 void TimeSync::handleTopicSyncMsgLeave(datamodel::SyncMsg syncMsg) {
@@ -101,7 +101,7 @@ void TimeSync::timeAdvance(int64_t stepInMS) {
     datamodel::SyncMsg s;
     // s.Action = datamodel::ActionType::REQUEST;
     s.Action = "request";  //currently, some implementation do not support enums...
-    s.Epoch = 0;           //todo
+    s.Epoch = 0;           //currently, we are fine with this for the cpp modules
     s.Sender = participantID;
     s.Time = newkafkatime;
 
@@ -148,7 +148,7 @@ void TimeSync::timeAdvanceToAbsolutePoint(int64_t newkafkatime) {
     datamodel::SyncMsg s;
     // s.Action = datamodel::ActionType::REQUEST;
     s.Action = "request";  //currently, some implementation do not support enums...
-    s.Epoch = 0;           //todo
+    s.Epoch = 0;           
     s.Sender = participantID;
     s.Time = newkafkatime;
 
