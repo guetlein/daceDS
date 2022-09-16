@@ -1511,3 +1511,69 @@ datamodel::RadioMsg AvroHelper::decodeRadioMsg(const std::string &pfx, const voi
 
     return msg;
 }
+
+
+std::vector<char> AvroHelper::encodeInteractionMsg(datamodel::InteractionMsg &msg) {
+    avro::ValidSchema *avro_schema;
+    if (schemas.count(SCHEMA_NAME_INTERACTIONMSG) == 0 || (avro_schema = schemas[SCHEMA_NAME_INTERACTIONMSG]->object()) == 0) {
+        KERROR("schema is not initialized");
+        exit(1);
+    }
+    std::vector<char> out;
+    std::string errstr;
+
+    avro::EncoderPtr e = avro::validatingEncoder(*avro_schema, avro::binaryEncoder());
+    std::auto_ptr<avro::OutputStream> bin_os = avro::memoryOutputStream();
+    e->init(*bin_os.get());
+    avro::encode(*e, msg);
+    e->flush();
+
+    /* Extract written bytes. */
+    boost::shared_ptr<std::vector<uint8_t>> v;
+    v = avro::snapshot(*bin_os.get());
+    /* Write framing */
+    schemas[SCHEMA_NAME_INTERACTIONMSG]->framing_write(out);
+    /* Write binary encoded Avro to output std::vector */
+    out.insert(out.end(), v->begin(), v->end());
+
+    return out;
+}
+
+datamodel::InteractionMsg AvroHelper::decodeInteractionMsg(const std::string &pfx, const void *buf, size_t len) {
+    DS_AVRO_DBG("decodeInteractionMsg");
+    std::string out;
+    avro::GenericDatum *d = NULL;
+    Serdes::Schema *schema = NULL;
+    std::string errstr;
+
+    DS_AVRO_DBG("serdes->deserialize");
+    serdes->deserialize(&schema, &d, buf, len, errstr);
+
+    datamodel::InteractionMsg msg;
+    avro::GenericRecord r = d->value<avro::GenericRecord>();
+    msg.CallID = r.field("CallID").value<std::string>();
+    DS_AVRO_DBG("msg.CallID "<<msg.CallID);
+    
+    msg.MethodID = r.field("MethodID").value<std::string>();
+    DS_AVRO_DBG("msg.MethodID "<<msg.MethodID);
+    
+    avro::GenericMap::Value vp = r.field("Input").value<avro::GenericMap>().value();
+    for (std::pair<std::string, avro::GenericDatum> p : vp) {
+        DS_AVRO_DBG(" Key=" << p.first);
+        DS_AVRO_DBG(" Value=" << p.second.value<std::string>());
+        msg.Input[p.first] = p.second.value<std::string>();
+    }    
+    vp = r.field("Output").value<avro::GenericMap>().value();
+    for (std::pair<std::string, avro::GenericDatum> p : vp) {
+        DS_AVRO_DBG(" Key=" << p.first);
+        DS_AVRO_DBG(" Value=" << p.second.value<std::string>());
+        msg.Output[p.first] = p.second.value<std::string>();
+    }
+
+    if (d)
+        delete d;
+
+    DS_AVRO_DBG("decodeInteractionMsg done");
+
+    return msg;
+}

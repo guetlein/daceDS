@@ -128,7 +128,7 @@ public class ScenarioInstanceExecutor extends Thread{
 		}
 		
 		for(Projector proj : scenario.getProjectors()) {
-			ExecutorThread t = new ExecutorThread(basePath, "Translators/"+proj.getType().toString(), proj.getProjectorID().toString(), scenario);
+			ExecutorThread t = new ExecutorThread(basePath, "Projectors/"+proj.getType().toString(), proj.getProjectorID().toString(), scenario);
 			threads.put(proj.getProjectorID().toString(), t);
 			logger.info("Added thread for "+proj.getProjectorID().toString());
 			t.start();

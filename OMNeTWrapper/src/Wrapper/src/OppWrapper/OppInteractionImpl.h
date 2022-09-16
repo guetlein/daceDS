@@ -13,13 +13,32 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package eu.fau.cs7.daceDS.Kafka;
+#pragma once
+#include <exception>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <vector>
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+#include "OppWrapper.h"
+#include "api/Interaction.h"
+#include "main/SimulationWrapper.h"
+#include "util/Config.h"
+#include "util/Defines.h"
 
-import eu.fau.cs7.daceDS.Component.ConsumerCallback;
+namespace daceDS {
 
-public interface ConsumerCallbackImplKafka extends ConsumerCallback {
-	<T>  void receive(ConsumerRecord r, long time, int epoch, String sender);
+class OppInteractionImpl : public Interaction {
+   public:
+    OppInteractionImpl(std::shared_ptr<SimulationWrapper> w) : Interaction() {
+        wrapper = w;
+    };
+    virtual ~OppInteractionImpl(){};
 
-}
+    std::shared_ptr<SimulationWrapper> wrapper;
+
+    void handleInteractionPositionUpdate(int64_t, int64_t, daceDS::datamodel::InteractionMsg msg);
+    void handleInteractionSendRadioMsg(daceDS::datamodel::RadioMsg msg);
+
+};
+}  // namespace daceDS

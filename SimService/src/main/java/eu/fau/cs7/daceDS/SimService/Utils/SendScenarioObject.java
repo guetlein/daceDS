@@ -21,15 +21,11 @@ import eu.fau.cs7.daceDS.Component.ScenarioUtils;
 import eu.fau.cs7.daceDS.Kafka.ProducerImplKafka;
 import eu.fau.cs7.daceDS.datamodel.BB;
 import eu.fau.cs7.daceDS.datamodel.Macro;
-import eu.fau.cs7.daceDS.datamodel.MacroList;
 import eu.fau.cs7.daceDS.datamodel.Meso;
-import eu.fau.cs7.daceDS.datamodel.MesoList;
 import eu.fau.cs7.daceDS.datamodel.Micro;
-import eu.fau.cs7.daceDS.datamodel.MicroList;
 import eu.fau.cs7.daceDS.datamodel.ResourceFile;
 import eu.fau.cs7.daceDS.datamodel.Scenario;
 import eu.fau.cs7.daceDS.datamodel.SubMicro;
-import eu.fau.cs7.daceDS.datamodel.SubMicroList;
 import eu.fau.cs7.daceDS.datamodel.Translator;
 
 import java.io.File;
@@ -387,20 +383,20 @@ public class SendScenarioObject
 							System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", roadID="+m.getRoad()+", laneID="+m.getLane()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
 						}
 					}	
-					else if(record.value() instanceof SubMicroList) {
-						SubMicroList ml = (SubMicroList)record.value();
-
-						for(SubMicro m : ml.getContents()){
-							if(m!=null) {
-								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
-
-								System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", roadID="+m.getRoad()+", laneID="+m.getLane()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
-							}
-						}
-						if(ml.getContents().size() == 0){
-							//System.out.println(" (List is empty)"); 
-						}
-					}	
+//					else if(record.value() instanceof SubMicroList) {
+//						SubMicroList ml = (SubMicroList)record.value();
+//
+//						for(SubMicro m : ml.getContents()){
+//							if(m!=null) {
+//								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
+//
+//								System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", roadID="+m.getRoad()+", laneID="+m.getLane()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
+//							}
+//						}
+//						if(ml.getContents().size() == 0){
+//							//System.out.println(" (List is empty)"); 
+//						}
+//					}	
 					else if(record.value() instanceof Micro) {
 
 						System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
@@ -409,34 +405,34 @@ public class SendScenarioObject
 							System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", angle="+m.getAngle()+", edge="+m.getEdge()+", lane="+m.getLane()+", distToEdge="+m.getPositionEdge()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
 						}
 					}	
-					else if(record.value() instanceof MicroList) {
-						MicroList ml = (MicroList)record.value();
-
-						for(Micro m : ml.getContents()){
-							if(m!=null) {
-								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
-
-								System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", angle="+m.getAngle()+", edge="+m.getEdge()+", lane="+m.getLane()+", distToEdge="+m.getPositionEdge()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
-							}
-						}
-						if(ml.getContents().size() == 0){
-							//System.out.println(" (List is empty)"); 
-						}
-					}	
-					else if(record.value() instanceof MesoList) {
-
-						MesoList ml = (MesoList)record.value();
-						for(Meso m : ml.getContents()){
-							if(m!=null) {
-
-								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
-								System.out.println(" veh="+m.getVehicleID()+", edge="+m.getLink()+", route="+m.getRoute()+", Type="+m.getType());
-							}
-						}
-						if(ml.getContents().size() == 0){
-							//System.out.println(" (List is empty)"); 
-						}
-					}	
+//					else if(record.value() instanceof MicroList) {
+//						MicroList ml = (MicroList)record.value();
+//
+//						for(Micro m : ml.getContents()){
+//							if(m!=null) {
+//								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
+//
+//								System.out.println(" veh="+m.getVehicleID()+", acc="+m.getAcceleration()+", angle="+m.getAngle()+", edge="+m.getEdge()+", lane="+m.getLane()+", distToEdge="+m.getPositionEdge()+", pos="+m.getPosition().getX()+"|"+m.getPosition().getY()+", route="+m.getRoute()+", speed="+m.getSpeed()+", vType="+m.getType());
+//							}
+//						}
+//						if(ml.getContents().size() == 0){
+//							//System.out.println(" (List is empty)"); 
+//						}
+//					}	
+//					else if(record.value() instanceof MesoList) {
+//
+//						MesoList ml = (MesoList)record.value();
+//						for(Meso m : ml.getContents()){
+//							if(m!=null) {
+//
+//								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
+//								System.out.println(" veh="+m.getVehicleID()+", edge="+m.getLink()+", route="+m.getRoute()+", Type="+m.getType());
+//							}
+//						}
+//						if(ml.getContents().size() == 0){
+//							//System.out.println(" (List is empty)"); 
+//						}
+//					}	
 					else if(record.value() instanceof Meso) {
 						Meso m = (Meso) record.value();
 						if(m!=null) {
@@ -451,17 +447,17 @@ public class SendScenarioObject
 							System.out.println(" roadID="+m.getLinkID()+", flow="+m.getFlow()+ ", density=" +m.getDensity()+ ", speed=" +m.getSpeed() +", noTuProbs="+m.getTurningProbabilities().size()+", paths="+m.getPaths());
 						}
 					} 
-					else if(record.value() instanceof MacroList) {
-						MacroList ml = (MacroList) record.value();
-	
-						for(Macro m : ml.getContents()){
-							if(m!=null) {
-								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
-								System.out.println(" roadID="+m.getLinkID()+", flow="+m.getFlow()+ ", density=" +m.getDensity()+ ", speed=" +m.getSpeed() +", noTuProbs="+m.getTurningProbabilities().size());
-			
-							}
-						}
-					} 
+//					else if(record.value() instanceof MacroList) {
+//						MacroList ml = (MacroList) record.value();
+//	
+//						for(Macro m : ml.getContents()){
+//							if(m!=null) {
+//								System.out.print(ANSI_GREEN+"["+String.format("%07d" , receiveCounter)+"] "+ANSI_RESET+timestr + " | " + record.topic() + " | " + record.key() + " | "  );
+//								System.out.println(" roadID="+m.getLinkID()+", flow="+m.getFlow()+ ", density=" +m.getDensity()+ ", speed=" +m.getSpeed() +", noTuProbs="+m.getTurningProbabilities().size());
+//			
+//							}
+//						}
+//					} 
 					else if(record.value() instanceof ResourceFile) {
 						ResourceFile m = (ResourceFile) record.value();
 						if(m!=null) {

@@ -13,13 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package eu.fau.cs7.daceDS.Kafka;
+#include "OppInteractionImpl.h"
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import eu.fau.cs7.daceDS.Component.ConsumerCallback;
 
-public interface ConsumerCallbackImplKafka extends ConsumerCallback {
-	<T>  void receive(ConsumerRecord r, long time, int epoch, String sender);
+void daceDS::OppInteractionImpl::handleInteractionPositionUpdate(int64_t t , int64_t st, daceDS::datamodel::InteractionMsg msg){
+    auto inp = msg.Input;
+    std::string vid = inp["vehicleID"];
+    double x = std::stod(inp["x"]);
+    double y = std::stod(inp["y"]);
+    double z = std::stod(inp["z"]);
+    (std::dynamic_pointer_cast<OppWrapper>(wrapper))->handlePositionUpdate(t, st, vid, x, y, z);
+}
 
+void daceDS::OppInteractionImpl::handleInteractionSendRadioMsg(daceDS::datamodel::RadioMsg msg){
+    (std::dynamic_pointer_cast<OppWrapper>(wrapper))->handleTopicSendRadioMsg(msg);
 }

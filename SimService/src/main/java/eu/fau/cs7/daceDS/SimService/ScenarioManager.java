@@ -43,6 +43,7 @@ public class ScenarioManager {
 	private static ArrayList<String> terminatedScenarioThreads= new ArrayList<String>();
 	static Logger logger  = Logger.getLogger(ScenarioManager.class.getName());
 	private static final long MAX_AGE = 60*60000;
+	private static ArrayList<String> knownSCEIDs = new ArrayList<String>();
 	
 	public ScenarioManager() {
 	}
@@ -136,15 +137,24 @@ public class ScenarioManager {
 	}
 
 
-	public static boolean addScenarioRun(Scenario scenario, long timestamp) {
+	public static int addScenarioRun(Scenario scenario, long timestamp) {
 
+		//check if request contains old sce id
+		if(knownSCEIDs.contains(scenario.getScenarioID().toString()))  {
+			logger.info("RunSimFromKafka: Ignoring Scenario " + scenario.getScenarioID()+" request. SCE id is already known");
+			return 2; //everything is good, we are just ignoring
+		}
+		
 		//check if request is too old
 		if(( (new Date()).getTime() - timestamp) > Config.getLong(Config.REQUEST_MAX_AGE))  {
 			logger.info("RunSimFromKafka: Ignoring Scenario " + scenario.getScenarioID()+" request. Too old (record is from "+timestamp+", diff is "+((new Date()).getTime() - timestamp)/1000+" seconds)");
-			return true; //everything is good, we are just ignoring
+			return 1; //everything is good, we are just ignoring
 		}
 
-		//todo: use some threadpool/executionservice
+		//room for other checks
+		//e.g., check state of computing cluster
+		
+
 		logger.info("Handing Scenario " + scenario.getScenarioID()+" to ScenarioRunner");
 		//ScenarioManager.printScenario(scenario);
 		ScenarioInstanceExecutor runner = new ScenarioInstanceExecutor(scenario, false);
@@ -152,14 +162,17 @@ public class ScenarioManager {
 		//prepare
 		if(!runner.instantiateScenario()) {
 			logger.info("Init ScenarioRunnerThread failed for " + scenario.getScenarioID());
-			return false;
+			return 3;
 		}
 		
 		//run
 		runner.start();
 		runningScenarioThreads.put(scenario.getScenarioID().toString(),runner);
 		logger.info("RunSimFromKafka: Scenario " + scenario.getScenarioID()+" started. Currently there are "+runningScenarioThreads.size()+" scenarios running.");
-		return true;
+
+		knownSCEIDs.add(scenario.getScenarioID().toString());
+		
+		return 0;
 	}
 	
 

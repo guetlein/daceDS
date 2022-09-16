@@ -99,8 +99,7 @@ public class VisumWrapper extends Simulator<Macro>{
 		VisumAPI.loadVer(verPath);
 
 		//need visum running before domain helper, because accessing road map
-		//todo: necessary if domain reference is up top datE? ja denke schon, hab dann ja nur nodes
-		
+		//todo: probably not necessary if domain reference is up-to-date
 
 		domainHelper = new DomainHelperTraffic(null,simulator.getResponsibilities());
 

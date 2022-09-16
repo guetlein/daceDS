@@ -57,6 +57,7 @@ public class Config
 	public static final String DIR_EXECROOT = "executablesRoot";
 	public static final String DIR_OUTPUT = "outputDirectory";
 	public static final String DIR_RESOURCE = "resourceDirectory";
+	public static final String DIR_DEFINITION = "definitionDirectory";
 
 	/* property names */
 	public static final String EXECUTABLES_ROOT = "executablesRoot";

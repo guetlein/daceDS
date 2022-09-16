@@ -20,8 +20,8 @@
 #include <stdexcept>
 #include <thread>
 
-#include "MessageHandler.h"
-#include "api/Interaction.h"
+#include "InteractionHandler.h"
+#include "api/Traffic/Micro/Interaction.h"
 #include "communication/AvroHelper.h"
 #include "communication/Producer.h"
 #include "communication/ConsumedMessage.h"
@@ -37,15 +37,14 @@ namespace daceDS {
 
 class Producer;
 
-class InteractionHandler : public MessageHandler {
-    protected:
-    std::shared_ptr<Interaction> api;
-    std::shared_ptr<Producer> producer;
+class InteractionHandlerTrafficMicro : public InteractionHandler {
 
    public:
-    InteractionHandler(std::shared_ptr<Interaction> i, std::shared_ptr<Producer> p);
-    virtual ~InteractionHandler(){};
+    InteractionHandlerTrafficMicro(std::shared_ptr<Interaction> i, std::shared_ptr<Producer> p) : InteractionHandler(std::shared_ptr<Interaction> i, std::shared_ptr<Producer> p);
+    ~InteractionHandlerTrafficMicro(){};
 
     bool handle(ConsumedMessage* msg) override;
+    void parseScopeVehicle(ConsumedMessage* msg, InteractionTopicMetadata2& imeta);
+    void parseScopeWorld(ConsumedMessage* msg, InteractionTopicMetadata2& imeta);
 };
 }  // namespace daceDS

@@ -54,6 +54,7 @@
 #define SCHEMA_NAME_VEC3 "eu.fau.cs7.daceDS.datamodel.Vec3"
 #define SCHEMA_NAME_RADIOMSG11P "eu.fau.cs7.daceDS.datamodel.RadioMsg11p"
 #define SCHEMA_NAME_RADIOMSG "eu.fau.cs7.daceDS.datamodel.RadioMsg"
+#define SCHEMA_NAME_INTERACTIONMSG "eu.fau.cs7.daceDS.datamodel.InteractionMsg"
 
 #define SCHEMA_DEF_SYNCMSG \
     "{\"type\":\"record\",\"name\":\"SyncMsg\",\"namespace\":\"eu.fau.cs7.daceDS.datamodel\",\"fields\":[{\"name\":\"Sender\",\"type\":\"string\"},{\"name\":\"Action\",\"type\":\"string\",\"default\":\"request\"},{\"name\":\"Time\",\"type\":\"long\"},{\"name\":\"Epoch\",\"type\":\"int\",\"default\":0},{\"name\":\"Messages\",\"type\":{\"type\":\"map\",\"values\":\"long\",\"default\":{}}}]}"
@@ -92,7 +93,8 @@
     "{ \"type\": \"array\", \"items\": { \"type\": \"record\", \"name\": \"Micro\", \"namespace\": \"eu.fau.cs7.daceDS.datamodel\", \"fields\": [ { \"name\": \"vehicleID\", \"type\": \"string\"}, { \"name\": \"acceleration\",\"type\": \"double\"}, { \"name\": \"angle\", \"type\": \"double\"}, { \"name\": \"edge\", \"type\": \"string\"}, { \"name\": \"lane\", \"type\": \"int\"}, { \"name\": \"position\", \"type\": { \"type\": \"record\", \"name\": \"Vec3\", \"namespace\": \"eu.fau.cs7.daceDS.datamodel\", \"fields\": [ { \"name\": \"x\", \"type\": \"double\"}, { \"name\": \"y\", \"type\": \"double\"}, { \"name\": \"z\", \"type\": \"double\"} ] }}, { \"name\": \"positionEdge\", \"type\": \"double\"}, { \"name\": \"route\", \"type\": {\"type\": \"array\", \"items\": \"string\"}}, { \"name\": \"slope\", \"type\": \"double\"}, { \"name\": \"speed\", \"type\": \"double\"}, { \"name\": \"type\", \"type\": \"string\"} ] } }"
 #define SCHEMA_DEF_VEC3 \
     "{\"type\":\"record\",\"name\":\"Vec3\",\"namespace\":\"eu.fau.cs7.daceDS.datamodel\",\"fields\":[{\"name\":\"x\",\"type\":\"double\"},{\"name\":\"y\",\"type\":\"double\"},{\"name\":\"z\",\"type\":\"double\"}]}"
-
+#define SCHEMA_DEF_INTERACTIONMSG \
+    "{\"type\":\"record\",\"name\":\"InteractionMsg\",\"namespace\":\"eu.fau.cs7.daceDS.datamodel\",\"fields\":[{\"name\":\"CallID\",\"type\":\"string\"},{\"name\":\"MethodID\",\"type\":\"string\"},{\"name\":\"Input\",\"type\":{\"type\":\"map\",\"values\":\"string\"}},{\"name\":\"Output\",\"type\":{\"type\":\"map\",\"values\":\"string\"}}]}"
 #define CONFIG_KAFKABROKER "kafkaBroker"
 #define CONFIG_KAFKALOGLEVEL "kafkaLogLevel"
 #define CONFIG_SCHEMAREGISTRY "schemaRegistry"

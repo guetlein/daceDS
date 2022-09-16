@@ -187,7 +187,7 @@ public class TimeSync implements ConsumerCallbackImplKafka {
 	}
 
 	@Override
-	public <T> void receive(ConsumerRecord r, long time, int epoch) {
+	public <T> void receive(ConsumerRecord r, long time, int epoch, String hsender) {
 //		public <T> void receive(String topic, String key, T o, long timestamp) {
 		
 		SyncMsg syncMsg = (SyncMsg) r.value();

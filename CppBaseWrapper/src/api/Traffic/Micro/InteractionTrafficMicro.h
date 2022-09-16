@@ -31,18 +31,15 @@
 * inherited by a wrapper for a tool that is categorized as 
 * traffic.micro.
 */
+
+#include "api/Interaction.h"
+
 namespace daceDS {
-class Interaction {
+class InteractionTrafficMicro : public Interaction {
    public:
-    Interaction(){};
-    ~Interaction(){};
+    InteractionTrafficMicro() : Interaction(){};
+    ~InteractionTrafficMicro(){};
 
-    static std::vector<std::string> methods;
-    static std::vector<std::string> getMethods() {
-        return methods;
-    }
-
-    int bla2 = 3;  //accesible on prov
     //scope vehicle
     class Vehicle {
        public:

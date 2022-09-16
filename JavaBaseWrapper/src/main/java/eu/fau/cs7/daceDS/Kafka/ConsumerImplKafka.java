@@ -148,7 +148,7 @@ public class ConsumerImplKafka<T> extends Consumer<T>
 				continue;
 			}
 			logger.debug("received msg");
-			cb.receive(r, getTime(r), getEpoch(r));
+			cb.receive(r, getTime(r), getEpoch(r), getSender(r));
 
 			if(countingConsumer){
 				logger.debug("added msg to counting log");
@@ -172,13 +172,20 @@ public class ConsumerImplKafka<T> extends Consumer<T>
 		}
 		return ScenarioUtils.bytesToLong(h.value());
 	}
-	
+
 	public static int getEpoch(ConsumerRecord record) {		
 		Header h = record.headers().lastHeader("epoch");
 		if(h== null) {
 			return 0;
 		}
 		return ScenarioUtils.bytesToInt(h.value());
+	}
+	public static String getSender(ConsumerRecord record) {		
+		Header h = record.headers().lastHeader("sender");
+		if(h== null) {
+			return "";
+		}
+		return h.value().toString();
 	}
 
 }

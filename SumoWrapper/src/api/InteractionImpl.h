@@ -23,7 +23,7 @@
 #include <locale>
 #include <string>
 //#include <codecvt>
-#include <api/Traffic/Micro/Interaction.h>
+#include <api/Traffic/Micro/InteractionTrafficMicro.h>
 #include <limits.h>
 #include <stdio.h>
 // #include <utils/traci/TraCIAPI.h>
@@ -62,7 +62,7 @@ namespace daceDS {
  * little complicated compound calls (e.g. setAngle()) are just delegated to sumoConnection 
  * and realized there. bc complexity is needed there anyway (e.g. adopt vehicle, set time, ...)
 */
-class InteractionImpl : public daceDS::Interaction {
+class InteractionImpl : public daceDS::InteractionTrafficMicro {
 
     #ifdef USING_TRACI
         std::shared_ptr<SumoConnectionTraCI> sumoConnection;
@@ -90,7 +90,7 @@ class InteractionImpl : public daceDS::Interaction {
 
     ~InteractionImpl(){};
 
-    class Vehicle : public daceDS::Interaction::Vehicle {
+    class Vehicle : public daceDS::InteractionTrafficMicro::Vehicle {
         #ifdef USING_TRACI
             std::shared_ptr<SumoConnectionTraCI> sumoConnection;
         #else
@@ -140,7 +140,7 @@ class InteractionImpl : public daceDS::Interaction {
         void getList(std::vector<std::string>& value, int64_t& time);
     };
 
-    class Edge : public Interaction::Edge {
+    class Edge : public InteractionTrafficMicro::Edge {
         #ifdef USING_TRACI
             std::shared_ptr<SumoConnectionTraCI> sumoConnection;
         #else
@@ -176,7 +176,7 @@ class InteractionImpl : public daceDS::Interaction {
    
 
     //scope detector
-    class Detector : public Interaction::Detector {
+    class Detector : public InteractionTrafficMicro::Detector {
         #ifdef USING_TRACI
             std::shared_ptr<SumoConnectionTraCI> sumoConnection;
         #else

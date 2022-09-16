@@ -21,6 +21,7 @@ import eu.fau.cs7.daceDS.Kafka.ConsumerImplKafka;
 import eu.fau.cs7.daceDS.Kafka.ConsumerCallbackImplKafka;
 import eu.fau.cs7.daceDS.datamodel.BB;
 import eu.fau.cs7.daceDS.datamodel.CtrlMsg;
+import eu.fau.cs7.daceDS.datamodel.Projector;
 import eu.fau.cs7.daceDS.datamodel.ResourceFile;
 import eu.fau.cs7.daceDS.datamodel.Scenario;
 import eu.fau.cs7.daceDS.datamodel.Translator;
@@ -53,6 +54,7 @@ public class OrchestrationHandler implements ConsumerCallbackImplKafka  {
 	public BB bbDescription = null;
 	private Translator tDescription = null;
 	private ConsumerImplKafka<CtrlMsg> ctrlReader;
+	private Projector pDescription = null;
 	
 	
 	public OrchestrationHandler(String scenarioID, String simulatorID) {
@@ -103,14 +105,25 @@ public class OrchestrationHandler implements ConsumerCallbackImplKafka  {
 				System.out.println(simulatorID+"!="+t.getTranslatorID());
 			}
 		}
+		for(eu.fau.cs7.daceDS.datamodel.Projector p : scenarioDescription.getProjectors()) {
+			if(p.getProjectorID().toString().equals(simulatorID)) {
+				pDescription = p;
+				break;
+			}else {
+				System.out.println(simulatorID+"!="+p.getProjectorID());
+			}
+		}
 		
-		if(bbDescription == null && tDescription == null) {
+		if(bbDescription == null && tDescription == null && pDescription == null) {
 			System.out.println("PROBLEM, didnt find my instance("+simulatorID+") in scenario description");
 			for(BB t : scenarioDescription.getBuildingBlocks()) {
 				System.out.println("'"+t.getInstanceID()+"'");
 			}
 			for(eu.fau.cs7.daceDS.datamodel.Translator t : scenarioDescription.getTranslators()) {
 				System.out.println("'"+t.getTranslatorID()+"'");
+			}
+			for(eu.fau.cs7.daceDS.datamodel.Projector t : scenarioDescription.getProjectors()) {
+				System.out.println("'"+t.getProjectorID()+"'");
 			}
 			System.exit(1);
 		}
@@ -249,8 +262,11 @@ public class OrchestrationHandler implements ConsumerCallbackImplKafka  {
 	public Translator getTranslator() {
 		return tDescription;
 	}
+	public Projector getProjector() {
+		return pDescription;
+	}
 
-	public <T> void receive(ConsumerRecord r, long time, int epoch) {
+	public <T> void receive(ConsumerRecord r, long time, int epoch, String sender) {
 		String topic = r.topic();
 		T o = (T)r.value();
 

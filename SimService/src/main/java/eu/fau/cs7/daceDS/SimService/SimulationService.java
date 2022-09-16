@@ -15,11 +15,17 @@
  ******************************************************************************/
 package eu.fau.cs7.daceDS.SimService;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -34,6 +40,7 @@ import eu.fau.cs7.daceDS.Component.Config;
 import eu.fau.cs7.daceDS.Kafka.ConsumerImplKafka;
 import eu.fau.cs7.daceDS.Kafka.ProducerImplKafka;
 import eu.fau.cs7.daceDS.datamodel.Micro;
+import eu.fau.cs7.daceDS.datamodel.ResourceFile;
 import eu.fau.cs7.daceDS.datamodel.Scenario;
 
 
@@ -57,6 +64,7 @@ public class SimulationService
 	private static boolean exitOnFailure =true;
 	private static String statusTopic = "orchestration.simulation.status";
 
+	
 	static Logger logger = Logger.getLogger(SimulationService.class.getName());
 	private static ProducerImplKafka<String> stringWriter;
 
@@ -99,6 +107,9 @@ public class SimulationService
 		}
 		publishStatus("SimulationService (re)started");
 		
+		publishDefinitions();
+		publishResources();
+		
 //		publishDemoData();
 
 		Thread l = listenForRequests();
@@ -131,6 +142,7 @@ public class SimulationService
 	public static Thread listenForRequests() {
 		Runnable r = new Runnable() {
 
+
 			public void run(){
 				logger.info("Starting to listen on "+Config.get(Config.CHANNEL_ORCHESTRATION));
 				scenarioConsumer.subscribe(Arrays.asList(Config.get(Config.CHANNEL_ORCHESTRATION)));
@@ -154,13 +166,22 @@ public class SimulationService
 										continue;
 									}
 									logger.info("Received new request: " + scenario.toString());
-									boolean succAdding = ScenarioManager.addScenarioRun(scenario, record.timestamp());
-									if(exitOnFailure && !succAdding) {
+									int errorAdding = ScenarioManager.addScenarioRun(scenario, record.timestamp());
+
+									if(errorAdding == 0) {
+										publishStatus("Successfully added "+scenario.getScenarioID()+" to pool!");										
+									}
+
+									if (errorAdding == 1) {
+										publishStatus("Request of scenario "+scenario.getScenarioID()+" is too old, ignoring!");										
+									}
+									if (errorAdding == 2) {
+										publishStatus("Requested scenario id "+scenario.getScenarioID()+" is already known, ignoring!");										
+									}
+									
+									if(exitOnFailure && errorAdding > 0) {
 										publishStatus("Failed to add "+scenario.getScenarioID()+" to pool!");
 										MAINLOOP_STOPPED.set(true);
-									}
-									if(succAdding) {
-										publishStatus("Successfully added "+scenario.getScenarioID()+" to pool!");
 									}
 								}
 							}
@@ -236,5 +257,66 @@ public class SimulationService
 		}
 		//todo: corrupted threads? notifiy about misery
 	}
+	
+	
+	public static String concatAllFilesInDir(String dirs) {
+		
+		String ddir = Config.get(Config.DIR_DEFINITION);
+		File dir = new File(ddir+dirs);
+		
+		String config = "";
+		try {
+			boolean first = true;
+			for (final File fileEntry : dir.listFiles()) {
+		        if (fileEntry.isFile()) {
+		           String content = Files.readString(Path.of(fileEntry.getPath()));
+		           if(!first) {config+=";\n\n";} else {first=false;}
+		           config+=content;
+			   }
+		    }
+		 } catch (IOException e) {
+				System.out.println("Failed to read definition files for "+dirs);
+				e.printStackTrace();
+			}
+		return config;
+	}
+	
 
+	
+	public static void publishDefinitions() { 
+		//all in one message for the definitions
+		stringWriter.publish(Config.get(Config.CHANNEL_ORCHESTRATION)+".definitions.domains", concatAllFilesInDir("/domains"), 0);
+		stringWriter.publish(Config.get(Config.CHANNEL_ORCHESTRATION)+".definitions.layers", concatAllFilesInDir("/layers"), 0);
+		stringWriter.publish(Config.get(Config.CHANNEL_ORCHESTRATION)+".definitions.components", concatAllFilesInDir("/components"), 0);
+		stringWriter.publish(Config.get(Config.CHANNEL_ORCHESTRATION)+".definitions.connectors", concatAllFilesInDir("/connectors"), 0);
+	}
+
+	
+	public static void publishResources() { 
+		
+		ProducerImplKafka<ResourceFile> kafkaResourceFileWriter = new ProducerImplKafka<ResourceFile>("kafkaResourceFileWriter");
+		kafkaResourceFileWriter.init();
+		
+		//single msg for  each resource
+		String ddir = Config.get(Config.DIR_DEFINITION);
+		File dir = new File(ddir+"/resources");
+		
+		String config = "";
+		try {
+			boolean first = true;
+			for (final File fileEntry : dir.listFiles()) {
+		        if (fileEntry.isFile()) {
+		           ResourceFile rf = new ResourceFile();
+		           rf.setID(fileEntry.getName());
+				   ByteBuffer buffer = ByteBuffer.wrap(Files.readAllBytes(fileEntry.toPath()));
+		           rf.setFile(buffer);
+		           rf.setType("");
+		           kafkaResourceFileWriter.publish(Config.get(Config.CHANNEL_ORCHESTRATION)+".definitions.resources", rf, 0);
+			   }
+		    }
+		 } catch (IOException e) {
+				System.out.println("Failed to read resource files");
+				e.printStackTrace();
+			}		
+	}
 }

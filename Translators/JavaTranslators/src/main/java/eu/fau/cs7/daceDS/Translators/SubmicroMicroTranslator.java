@@ -170,7 +170,9 @@ public class SubmicroMicroTranslator<A,B> extends Translator<A,B> {
     	String roadstr =  ((DomainHelperTraffic)domainHelperLayerA).microEdge2SubMicroRoad(micro.getEdge().toString());
     	long ri = Long.valueOf(roadstr.split("_")[0]);
     	int li = Integer.valueOf(roadstr.split("_")[1]);
-    	submicro.setLane(ri+"-"+li); 
+//    	submicro.setLane(ri+"-"+li); //pre
+    	submicro.setRoad(ri); 
+    	submicro.setLane(li); 
     	
         List<Waypoint> route = new ArrayList<Waypoint>();
         for(CharSequence edge : micro.getRoute()) {

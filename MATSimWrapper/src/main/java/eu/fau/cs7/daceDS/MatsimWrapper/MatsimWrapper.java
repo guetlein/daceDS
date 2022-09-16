@@ -108,8 +108,8 @@ public class MatsimWrapper extends Simulator<Meso> implements MobsimBeforeSimSte
 		String scenarioID = args[0];
 		String instanceID = args[1];		
 		String demoScenario = "";
-		String provisionPrePattern = "link\\."; //todo
-		String provisionPostPattern = "\\.vehicles";//todo
+		String provisionPrePattern = "link\\."; 
+		String provisionPostPattern = "\\.vehicles";
 		
 		if(args.length == 3) {
 			demoScenario = args[2];

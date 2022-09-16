@@ -16,20 +16,6 @@
 
 #include "TimeSync.h"
 namespace daceDS {
-// using namespace daceDS;
-
-/*
-* todo: should lbts ignore messages -> and represent advance wishes?
-* or do we want another field "localTime" that combines lbts and messageCount
-*/
-// void TimeSync::init( std::shared_ptr<Producer> p, std::shared_ptr<Consumer> c) {
-//     DS_SYNC_DBG("Initializing TimeSync");
-//     AvroHelper::getInstance()->initSchema(SCHEMA_NAME_SYNCMSG, SCHEMA_DEF_SYNCMSG, topic);
-//     consumer = c;
-//     consumer->subscribe(Config::getInstance()->get(CONFIG_KAFKABROKER), {topic}, participantID, "");
-//     producer = p;
-//     producer->init(Config::getInstance()->get(CONFIG_KAFKABROKER), {topic}, participantID, "");
-// }
 
 TimeSync::TimeSync(std::string t, int64_t s) : syncTopic(t), syncedParticipants(s) {
     //AvroHelper::getInstance()->initSchema(SCHEMA_NAME_SYNCMSG, SCHEMA_DEF_SYNCMSG, topic); //no need, we have a recordBasedNaming-strategy

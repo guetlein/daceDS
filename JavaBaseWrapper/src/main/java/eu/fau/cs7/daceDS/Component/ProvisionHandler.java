@@ -17,11 +17,14 @@ package eu.fau.cs7.daceDS.Component;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.header.Header;
 import org.apache.log4j.Logger;
 
 import eu.fau.cs7.daceDS.Kafka.ConsumerImplKafka;
@@ -145,13 +148,12 @@ public class ProvisionHandler<T> implements ConsumerCallbackImplKafka {
 	}
 	public void sendNDM(String topic, T msg, long time, int epoch) {
 //		logger.info(time+", Sending '"+msg+"' to "+topic);
-		writerCounting.publish(topic, "key", msg, time, epoch, instanceID); //todo: eigtl kannd er auch buch führen pber die zeit, wird ja keine aus der vergangenheit empfangen	
+		writerCounting.publish(topic, "key", msg, time, epoch, instanceID); 
 	}
 
 	@Override
-	public <T> void receive(ConsumerRecord r, long time, int epoch) { //todo: eigtl wollte ich hier schon kafka agnostisch sein
+	public <T> void receive(ConsumerRecord r, long time, int epoch, String sender) { 
 		
-		String sender = new String(r.headers().lastHeader("sender").value());
 		if(sender.equals(instanceID)){
 			//skipping own message
 			return;
@@ -164,7 +166,7 @@ public class ProvisionHandler<T> implements ConsumerCallbackImplKafka {
 				ArrayList<ConsumerRecord> l = new ArrayList<ConsumerRecord>();
 				buffer.put(timeepoch, l);
 			}
-			buffer.get(timeepoch).add(r); //todo: sort
+			buffer.get(timeepoch).add(r); //todo: sorting when adding might be faster
 		}
 	}
 
@@ -181,7 +183,9 @@ public class ProvisionHandler<T> implements ConsumerCallbackImplKafka {
 			ArrayList<Long> toRemove = new ArrayList<Long>();
 			for(Entry<Long, ArrayList<ConsumerRecord>> e : buffer.entrySet()) {
 				if(e.getKey() < timeepoch) {	
-					for(ConsumerRecord r : e.getValue()) {
+					ArrayList<ConsumerRecord> msgs = e.getValue();
+			        Collections.sort(msgs, new ConsumerRecordComparator());
+					for(ConsumerRecord r : msgs) {
 						logger.debug("processing " + r.topic() + ", "+ r.key()+ ", "+ r.timestamp());
 						instance.processMessage(r);
 					}
@@ -245,5 +249,6 @@ public class ProvisionHandler<T> implements ConsumerCallbackImplKafka {
 			logger.error("failed to close writers");
 		}
 	}
-
+	
+	
 }

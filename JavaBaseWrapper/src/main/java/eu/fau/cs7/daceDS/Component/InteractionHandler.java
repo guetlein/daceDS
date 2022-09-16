@@ -94,10 +94,9 @@ public class InteractionHandler implements ConsumerCallbackImplKafka{
 	}
 
 	@Override
-	public void receive(ConsumerRecord r, long time, int epoch) { 
+	public void receive(ConsumerRecord r, long time, int epoch, String sender) { 
 		logger.info("CB Received object in "+r.topic()+ " with key="+r.key());
 		
-		String sender = new String(r.headers().lastHeader("sender").value());
 		if(sender.equals(instanceID)){
 			logger.info("skipping own message");
 			return;
@@ -110,7 +109,7 @@ public class InteractionHandler implements ConsumerCallbackImplKafka{
 				ArrayList<ConsumerRecord> l = new ArrayList<ConsumerRecord>();
 				buffer.put(timeepoch, l);
 			}
-			buffer.get(timeepoch).add(r); //todo: sort
+			buffer.get(timeepoch).add(r); 
 		}
 	}
 
@@ -128,7 +127,9 @@ public class InteractionHandler implements ConsumerCallbackImplKafka{
 			for(Entry<Long, ArrayList<ConsumerRecord>> e : buffer.entrySet()) {
 				logger.info(e.getKey() +"?");
 				if(e.getKey() < timeepoch) {	
-					for(ConsumerRecord r : e.getValue()) {
+					ArrayList<ConsumerRecord> msgs = e.getValue();
+			        Collections.sort(msgs, new ConsumerRecordComparator());
+					for(ConsumerRecord r : msgs) {
 						logger.debug("processing " + r.topic() + ", "+ r.key()+ ", "+ r.timestamp());
 						instance.processInteraction(r);
 					}

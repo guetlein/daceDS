@@ -1,10 +1,12 @@
 <p align="center">
-  <img src="Docs/img/daceDS.png" width="50%" />
+  <img src="Docs/img/daceDS.png" width="60%" />
 </p>
 
 # 
 daceDS is a **da**ta-**ce**ntric **D**istributed **S**imulation framework that focuses on data and loose couplings between components. 
 It provides a simulation service with a web frontend that enables to combine various black-boxes in a plug-and-play manner. The connection of simulators, the integrating of data sources, the provision of data & interaction interfaces for external components, as well as the orchestration of simulation runs is covered. All communication is realized via a topic-based publish/subscribe paradigm on top of Apache Kafka. 
+
+Under the term daceDS, this repo provides a stereotypical implementation of the developed ideas in my upcoming PhD thesis. The implementations were used to asses the feasibility of the proposed concepts and to evaluate use cases and performance. Therefore, all warranties are expressly excluded. Feel free to use, fix bugs, contribute, or fork the codebase. 
 
 
 ## Features

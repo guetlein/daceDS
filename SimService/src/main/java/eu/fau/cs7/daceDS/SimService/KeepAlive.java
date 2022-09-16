@@ -117,7 +117,7 @@ public class KeepAlive implements ConsumerCallbackImplKafka
 	}
 
 	@Override
-	public <T> void receive(ConsumerRecord r, long time, int epoch) {
+	public <T> void receive(ConsumerRecord r, long time, int epoch, String sender) {
         gotResponse = true;
         logger.info("Got response: "+((String)r.value()));	
 	}

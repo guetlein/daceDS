@@ -29,13 +29,7 @@
 #include "util/Config.h"
 #include "util/Defines.h"
 
-/**
-* This class is derived from the traffic.micro layer definition. 
-* As this is a generic interface description, this class will be 
-* inherited by a wrapper for a tool that is categorized as 
-* traffic.micro.
-*/
-//todo: split into layer (in)dependent parts
+
 namespace daceDS {
 class SimulationWrapper;
 class Provision {

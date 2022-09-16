@@ -53,6 +53,7 @@
 #include "datamodel/Scenario.hh"
 #include "datamodel/StatusMsg.hh"
 #include "datamodel/SyncMsg.hh"
+#include "datamodel/InteractionMsg.hh"
 #include "util/Config.h"
 #include "util/Defines.h"
 #include "util/Utils.h"
@@ -123,6 +124,10 @@ class AvroHelper {
     // datamodel::RadioMsg11p decodeRadioMsg11p(const std::string& pfx, const void* buf, size_t len);
     std::vector<char> encodeRadioMsg(datamodel::RadioMsg& msg);
     datamodel::RadioMsg decodeRadioMsg(const std::string& pfx, const void* buf, size_t len);
+
+
+    std::vector<char> encodeInteractionMsg(datamodel::InteractionMsg& msg);
+    datamodel::InteractionMsg decodeInteractionMsg(const std::string& pfx, const void* buf, size_t len);
 };
 
 }  // namespace daceDS

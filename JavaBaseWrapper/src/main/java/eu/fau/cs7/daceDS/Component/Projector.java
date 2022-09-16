@@ -38,10 +38,12 @@ public abstract class Projector extends Instance{
 
 	}
 	
-	public abstract void preLoopEvent();
-	public abstract void postStepEvent(int t);
-	public abstract void stepEvent(int t);
-	public abstract void preSimStepEvent();
+	protected void preLoopEvent() {};
+	protected void preStepEvent(int t) {};
+	protected void stepEvent(int t) {};
+	protected void processStepEvent(int t) {};
+	protected void postStepEvent(int t) {};
+	protected void postLoopEvent() {};
 
 	public void close(){		
 		super.close();
