@@ -174,11 +174,9 @@ export default {
       for(let domain of this.domains){
           var domainShort = {
             name : domain.name,
-            domain : domain.domain,
             description : domain.description,
             version : domain.version,
             reference : domain.reference,
-            referenceDescription : domain.referenceDescription,
             actions : {domain : domain}
           }
           this.domainsShort.push(domainShort)

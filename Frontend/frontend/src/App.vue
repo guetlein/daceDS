@@ -205,9 +205,11 @@ export default {
       var parser = new xml2js.Parser();
       let setMapElements = this.setMapElements;
       parser.parseString(content, function (err, result) {
+        console.log("received the following map:")
+        console.dir(result)
         var lList = new Map();
         var nList = new Map();
-        var net = result["domainReference"];
+        var net = result["DomainReference"];
         var links = net["link"];
         for (var e in links) {
           var link = links[e];
@@ -489,7 +491,7 @@ export default {
       }
 
       for (const bb of bbs.values()) {
-        if (domain == bb.Domain && layer ==bb.Layer && type == bb.Type) {
+        if (domain == bb.domain && layer ==bb.Layer && type == bb.Type) {
           return bb;
         }
       }
@@ -629,7 +631,7 @@ export default {
       // console.log("availableResourcesForLayer: "+domain+"-"+layer)
       var filteredresourceList = []
        for(let resource of this.resourceList){
-         let tmpDomain = String(resource.Domain).toLowerCase()
+         let tmpDomain = String(resource.domain).toLowerCase()
          let tmpLayer = String(resource.Layer).toLowerCase()
         if(tmpDomain == domain && tmpLayer == layer ){
           filteredresourceList.push(resource)
@@ -779,7 +781,7 @@ export default {
 
     setDomainReferences(drs) {
       console.log("setting domainreferences");
-      Vue.set(this.scee, "DomainReferences", drs);
+      Vue.set(this.scee, "domainReferences", drs);
       console.log("changed $sce");
       return;
     },   
@@ -790,11 +792,11 @@ export default {
     
 
     setDomainReferenceByID(domain, domainReferenceID) {
-      Vue.set(this.scee.DomainReferences, domain, domainReferenceID);
+      Vue.set(this.scee.domainReferences, domain, domainReferenceID);
       return;
     },
     getDomainReferenceID(domain) {
-      return this.scee.DomainReferences[domain];
+      return this.scee.domainReferences[domain];
     },
 
 
@@ -816,7 +818,7 @@ export default {
             numSyncedParticipants += 1
           
         }
-        for(const trans of this.scee.Projectors){
+        for(const trans of this.scee.projectors){
            console.dir(trans)
             numSyncedParticipants += 1
           

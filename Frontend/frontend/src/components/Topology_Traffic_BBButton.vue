@@ -20,7 +20,7 @@
   <!-- v-for="(val, name) in this.$parent.$parent.testInstanceMap" -->
   <b-row>
     <!-- <span v-for="(name, id) in $instanceMap.entries()" :key="'btn' + name"> -->
-    <span v-for="instance in getTrafficBBs" :key="'btn' + instance.ID">
+    <span v-for="instance in getTrafficBBs" :key="'btn' + instance.instanceID">
                   <!-- ,
                   backgroundColor:getColorOpacity(instance.ID,0.8)}"   > -->
       
@@ -28,7 +28,7 @@
             variant="light" squared disabled
             style="margin:0px 4px -1px 4px;padding:2px;  padding-right:20px;  border-style:solid;border-left-width:1px;border-right-width:1px;border-bottom-width:0px;border-top-width:5px"
             v-bind:style="{
-                  borderColor:getColor(instance.ID)}"
+                  borderColor:getColor(instance.instanceID)}"
             >
       <b-container  
         
@@ -36,11 +36,11 @@
         style2="width: 160px; margin:0px 4px 0px 4px;padding:2px; border-radius:4px; background-color:#6c757d;border-top-width:5px;border-left-width:5px;border-right-width:5px" 
         style3="width: 150px; margin:0px 4px 0px 4px;padding:2px; border-radius:4px; border-style:solid;border-left-width:3px;border-right-width:0px;border-top-width:0px;border-bottom-width:3px"     
                 v-bind:style="{
-                  borderColor:getColor(instance.ID)}">
+                  borderColor:getColor(instance.instanceID)}">
 
                    <b-row>
                   <b-col cols="auto" style="margin-left:-10px;margin-right:10px;width:60px"><img
-                :src="getLogo(instance.Type)"
+                :src="getLogo(instance.type)"
                 style="
                   width: 45px;
                   margin: 1px;
@@ -54,23 +54,23 @@
                   -webkit-box-shadow: 0 0 8px var(--sumo-logo-shadow-color);
                   -moz-box-shadow: 0 0 8px var(--sumo-logo-shadow-color);
                 " v-bind:style="{
-                  borderColor:getColor(instance.ID)}" /></b-col>
+                  borderColor:getColor(instance.instanceID)}" /></b-col>
 
                 <b-col style="margin:0;">
         <b-row > 
          <span style="font-size:14px;color:black;margin:0;"> 
-                {{ instance.ID }}
+                {{ instance.instanceID }}
               </span>
         </b-row>
 
         <b-row align-v="end">
-              <b-button style="padding:0px; margin-right:5px; margin-left:5px;" variant="light" @click="setActiveInstance(instance.ID)" >
+              <b-button style="padding:0px; margin-right:5px; margin-left:5px;" variant="light" @click="setActiveInstance(instance.instanceID)" >
                 <img
                  width="20px"
                   src="../assets/baseline_fullscreen_black_24dp.png"
                 />
               </b-button>
-              <b-button style="padding:0px; margin-right:5px; margin-left:5px;"  variant="light" @click="promoteInstance(instance.ID)" >
+              <b-button style="padding:0px; margin-right:5px; margin-left:5px;"  variant="light" @click="promoteInstance(instance.instanceID)" >
                                <img
                                 width="20px"
                   src="../assets/baseline_west_black_24dp.png"
@@ -82,7 +82,7 @@
                   src="../assets/baseline_settings_black_24dp.png"
                 /> 
               </b-button>-->
-              <b-button style="padding:0px; margin-right:5px; margin-left:5px;" variant="light" @click="removeInstance(instance.ID)">
+              <b-button style="padding:0px; margin-right:5px; margin-left:5px;" variant="light" @click="removeInstance(instance.instanceID)">
                 <img
                  width="20px"
                   src="../assets/baseline_delete_black_24dp.png"
@@ -150,7 +150,7 @@ export default {
     getTrafficBBs() {
       let bbs = []
       for(let bb of this.app.scee.buildingBlocks){
-        if(bb.Domain == "traffic"){
+        if(bb.domain == "traffic"){
           bbs.push(bb)
         }
       }

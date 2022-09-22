@@ -19,7 +19,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg"  type="light" variant="light"  z-index="2" style="height:60px">
-      <b-navbar-brand href="#">SimService</b-navbar-brand>
+      <b-navbar-brand href="#" style="font-size:40px"><img src="./../assets/daceDS.png" style="height:50px"/>  </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">

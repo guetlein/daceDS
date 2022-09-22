@@ -32,7 +32,7 @@
               </b-col>
                <b-col cols=8>
                 <b-form-select
-                  v-model="newInstance.Type"
+                  v-model="newInstance.type"
                   required
                   id="selectSimulator"
                   ref="selectSimulator"
@@ -54,7 +54,7 @@
               </b-col>
                <b-col cols=8>
                 <b-form-input
-                  v-model="newInstance.ID"
+                  v-model="newInstance.instanceID"
                   required
                   id="inputID"
                   ref="inputID"
@@ -74,7 +74,7 @@
               </b-col>
                <b-col cols=8>
                 <b-form-input
-                  v-model="newInstance.Domain"
+                  v-model="newInstance.domain"
                   disabled
                   id="inputDomain"
                   ref="inputDomain"
@@ -92,7 +92,7 @@
               </b-col>
                <b-col cols=8>
                 <b-form-input
-                  v-model="newInstance.Layer"
+                  v-model="newInstance.layer"
                   disabled
                   id="inputLayer"
                   ref="inputLayer"
@@ -110,7 +110,7 @@
               </b-col>
                <b-col cols=8>
                 <b-form-input
-                  v-model="newInstance.StepLength"
+                  v-model="newInstance.stepLength"
                   id="inputStepLength"
                   ref="inputStepLength"
                   type="number"
@@ -127,7 +127,7 @@
               </b-col>
                 <b-col cols=8>
                 <b-form-checkbox
-                  v-model="newInstance.Synchronized"
+                  v-model="newInstance.synchronized"
                   id="checkNdmIsSynchronized"
                 >Synchronized</b-form-checkbox>
                 </b-col>   
@@ -151,8 +151,8 @@ export default {
       inputIDState: null,
       simulatorNames: [],
       newInstance: {
-        Synchronized : true,
-        Resources : {}},
+        synchronized : true,
+        resources : {}},
     };
   },
   components: {},
@@ -197,13 +197,14 @@ export default {
     },    
 
     typeChange(){
-        let sim = this.getSim(this.newInstance.Type)
+        let sim = this.getSim(this.newInstance.type)
         this.$refs.inputID.value = sim.name+String(this.instanceCounter)
         this.$refs.inputLayer.value = sim.layer
         this.$refs.inputDomain.value = sim.domain
         this.newInstance.instanceID = sim.name+String(this.instanceCounter)
-        this.newInstance.Layer = sim.layer
-        this.newInstance.Domain = sim.domain
+        this.newInstance.layer = sim.layer
+        this.newInstance.domain = sim.domain
+        this.newInstance.type = sim.name
     },
     checkFormValidity() {
       const IDValid = this.$refs.inputID.checkValidity();
@@ -243,14 +244,17 @@ export default {
   },
    computed: {
       components(){
+        console.log("components")
+        console.dir(this.app.datamodel.components)
         return this.app.datamodel.components
       },
     },
   watch: {
-    simulators : function(){
+    components : function(){
       this.simulatorNames = []
       for(let simulator of this.components){
-          this.simulatorNames.push({ text: simulator.name, value: simulator.name, disabled: !simulator.enabled })
+          this.simulatorNames.push({ text: simulator.name, value: simulator.name, disabled: false })
+          // this.simulatorNames.push({ text: simulator.name, value: simulator.name, disabled: !simulator.enabled })
           // this.simulatorNames.push(simulator.name)
         }
     },

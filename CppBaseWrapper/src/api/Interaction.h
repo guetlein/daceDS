@@ -29,7 +29,7 @@ namespace daceDS {
 class Interaction {
    public:
     Interaction(){};
-    ~Interaction(){};
+    virtual ~Interaction(){};
 
     static std::vector<std::string> methods;
     static std::vector<std::string> getMethods() {

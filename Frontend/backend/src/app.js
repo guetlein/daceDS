@@ -28,6 +28,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 
+const BROKER = "192.168.0.209:9092"
+const REGISTRY = "http://192.168.0.209:8081"
+
+
 var path = require('path')
 var multer = require('multer');
 const storage = multer.diskStorage({
@@ -43,89 +47,96 @@ app.use(upload.array('Payload'));
 app.use(express.static('public'));
 
 
-
 /*
 * *********************************************************
-*                     READ FROM FS
+*                     READ DEFINITIONS
 * *********************************************************
 */
-
-//todo: provide consumption from topics in parallel
-
 var glob = require("glob")
 var fs = require("fs")
 
 var datamodel = {
   domains : [],
   layers : [],
-  simulators : [],
-  translators : []
+  components : [],
+  translators : [],
+  projectors : []
 }
 
-/////////////////////////////////////////////////////////
-// get domains
-console.log('        ')
-console.log(' ~~ domains ~~ ')
+const readDefinitionsFromDataPool = true
 
-glob("data/domains/*.json", function (er, files) {
-  for(i in files){
-    var path = files[i]
-    console.log("found "+path)
-    let rawdata = fs.readFileSync(path);
-    let elem = JSON.parse(rawdata);
-    //console.log(elem)
-    console.log(elem.name)
-    datamodel.domains.push(elem)
-  }
-})
 
-//////////////////////////////////////////////////////////
-// get layers
-console.log('        ')
-console.log(' ~~ layers ~~ ')
-glob("data/layers/*.json", function (er, files) {
-  for(i in files){
-    var path = files[i]
-    console.log("found "+path)
-    let rawdata = fs.readFileSync(path);
-    let layer = JSON.parse(rawdata);
-    //console.log(layer)
-    console.log(layer.name)
-    datamodel.layers.push(layer)
-  }
-})
+if(readDefinitionsFromDataPool == false) {
+  /////////////////////////////////////////////////////////
+  // get domains
+  console.log('        ')
+  console.log(' ~~ domains ~~ ')
 
-/////////////////////////////////////////////////////////
-// get sims
-console.log('        ')
-console.log(' ~~ simulators ~~ ')
-glob("data/simulators/*.json", function (er, files) {
-  for(i in files){
-    var path = files[i]
-    console.log("found "+path)
-    let rawdata = fs.readFileSync(path);
-    let elem = JSON.parse(rawdata);
-    //console.log(elem)
-    console.log(elem.name)
-    datamodel.simulators.push(elem)
-  }
-})
+  glob("data/domains/*.json", function (er, files) {
+    for(i in files){
+      var path = files[i]
+      console.log("found "+path)
+      let rawdata = fs.readFileSync(path);
+      let elem = JSON.parse(rawdata);
+      //console.log(elem)
+      console.log(elem.name)
+      datamodel.domains.push(elem)
+    }
+  })
 
-/////////////////////////////////////////////////////////
-// get translators
-console.log('        ')
-console.log(' ~~ translators ~~ ')
-glob("data/translators/*.json", function (er, files) {
-  for(i in files){
-    var path = files[i]
-    console.log("found "+path)
-    let rawdata = fs.readFileSync(path);
-    let elem = JSON.parse(rawdata);
-    //console.log(elem)
-    console.log(elem.name)
-    datamodel.translators.push(elem)
-  } 
-})
+  //////////////////////////////////////////////////////////
+  // get layers
+  console.log('        ')
+  console.log(' ~~ layers ~~ ')
+  glob("data/layers/*.json", function (er, files) {
+    for(i in files){
+      var path = files[i]
+      console.log("found "+path)
+      let rawdata = fs.readFileSync(path);
+      let layer = JSON.parse(rawdata);
+      //console.log(layer)
+      console.log(layer.name)
+      datamodel.layers.push(layer)
+    }
+  })
+
+  /////////////////////////////////////////////////////////
+  // get sims
+  console.log('        ')
+  console.log(' ~~ components ~~ ')
+  glob("data/components/*.json", function (er, files) {
+    for(i in files){
+      var path = files[i]
+      console.log("found "+path)
+      let rawdata = fs.readFileSync(path);
+      let elem = JSON.parse(rawdata);
+      //console.log(elem)
+      console.log(elem.name)
+      datamodel.components.push(elem)
+    }
+  })
+
+  /////////////////////////////////////////////////////////
+  // get translators
+  console.log('        ')
+  console.log(' ~~ translators ~~ ')
+  glob("data/translators/*.json", function (er, files) {
+    for(i in files){
+      var path = files[i]
+      console.log("found "+path)
+      let rawdata = fs.readFileSync(path);
+      let elem = JSON.parse(rawdata);
+      //console.log(elem)
+      console.log(elem.name)
+      datamodel.translators.push(elem)
+    } 
+  })
+}
+
+
+
+
+
 
 app.post('/getDomains', (req, res) => {
   console.log("got getDomain request")   
@@ -159,6 +170,7 @@ app.post('/setDatamodel', (req, res) => {
   return res.status(200).send(datamodel);
 });
 
+  
 
 
 /*
@@ -169,120 +181,232 @@ app.post('/setDatamodel', (req, res) => {
 
 
 var cid = Date.now();
-  const { Kafka } = require('kafkajs')
-  const { SchemaRegistry, SchemaType, readAVSCAsync } = require('@kafkajs/confluent-schema-registry');
+const { Kafka } = require('kafkajs')
+const { SchemaRegistry, SchemaType, readAVSCAsync } = require('@kafkajs/confluent-schema-registry');
 const { create } = require("domain");
 const { dir } = require("console");
 
-  // configure Kafka broker
-  const kafka = new Kafka({
-    clientId: "daceDS-web-backend-client"+cid,
-    brokers: ["127.0.0.1:9092"], //todo: read from config
+// configure Kafka broker
+const kafka = new Kafka({
+  clientId: "daceDS-web-backend-client"+cid,
+  brokers: [BROKER], 
+});
+const registry = new SchemaRegistry({
+  host: REGISTRY,  
+});
+
+// create a producer which will be used for producing messages
+const producer = kafka.producer();
+const stringProducer  = kafka.producer();
+
+var statusConsumer;
+var statusMessages = [];
+async function status () {
+  console.log("creating status listener")
+  statusConsumer = kafka.consumer({ groupId: 'backend'+1000*Math.random() })
+  await statusConsumer.connect()
+  console.log("connected status listener")
+
+  statusConsumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+        console.log({
+            key: message.key.toString(),
+            value: message.value.toString(),
+            headers: message.headers,
+        })
+    },
   });
-  const registry = new SchemaRegistry({
-    host: "http://127.0.0.1:8081",  //todo: read from config
-  });
+}
 
-  // create a producer which will be used for producing messages
-  const producer = kafka.producer();
-  const stringProducer  = kafka.producer();
-
-  var statusConsumer;
-  var statusMessages = [];
-  async function status () {
-    console.log("creating status listener")
-    statusConsumer = kafka.consumer({ groupId: 'backend' })
-    await statusConsumer.connect()
-    console.log("connected status listener")
-
-    statusConsumer.run({
-      eachMessage: async ({ topic, partition, message }) => {
-          console.log({
-              key: message.key.toString(),
-              value: message.value.toString(),
-              headers: message.headers,
-          })
-      },
-    });
-  }
-
-
-  async function registerSceSchema () {
-    try {
-      const schema = await readAVSCAsync("./src/Scenario_flat.avsc");
-      ret = await registry.register(schema);
-      console.log("registerSchema for SCE succ, id:"+ret.id);
-      sceSchemaID = ret.id;
-    } catch (e) {
-      console.log(e);
-    }
-  };  
-  async function registerResourceFileSchema () {
-    try {
-      const schema = await readAVSCAsync("./src/ResourceFile.avsc");
-      ret = await registry.register(schema);
-      console.log("registerSchema for ResourceFile succ, id:"+ret.id);
-      rfSchemaID = ret.id;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  async function registerSyncMsgSchema () {
-    try {
-      const schema = await readAVSCAsync("./src/SyncMsg.avsc");
-      ret = await registry.register(schema);
-      console.log("registerSchema for SyncMsg succ, id:"+ret.id);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  async function registerCtrlMsgSchema () {
-    try {
-      const schema = await readAVSCAsync("./src/CtrlMsg.avsc");
-      ret = await registry.register(schema);
-      console.log("registerSchema for CtrlMsg succ, id:"+ret.id);
-      ctrlSchemaID = ret.id;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const produceToKafka = async (registryId, topic, message) => {
-    message = cpy(message)
-    console.log("about to send somethin to "+topic)
-    await producer.connect();
-
-    encoded = await registry.encode(registryId, message).catch(error => { console.log('caught when encoding: ', error.message, ' on ', topic); console.dir(error); })
-    
-    outgoingMessage = {
-      key: "",
-      value: encoded
-    };
-
-    if(outgoingMessage.value != null){
-      console.log("encoded message!")
-      await producer.send({
-        topic: topic,
-        messages: [outgoingMessage],
-      }).catch(error => { console.log('caught when sending: ', error.message); console.dir(error);  });
-
-
-      console.log("done sending to "+topic)
+function getIDX(lst, name){
+  var idx = 0
+  for(var e of lst){
+    if ( e.name == name){
+      return idx
     } else {
-      console.log("could not send anything to "+topic)
+      console.log(e.name + " vs " + name)
     }
-    await producer.disconnect();
+    idx++
+  }
+  return -1
+}
+
+async function readDefFromDataPool(){
+  var definitionConsumerDomains = kafka.consumer({ groupId: cid+"_def"+1000*Math.random()});
+  await definitionConsumerDomains.connect();
+  try{
+    var t = 'orchestration\\.simulation\\.definitions\\.(\\S)+'
+    r = new RegExp(t)
+    await definitionConsumerDomains.subscribe({ topic: r, fromBeginning: true });
+  } catch(e) {
+    console.log(e)
+    console.log("canceling subscription")
+    return
+  }  
+  definitionConsumerDomains.run({
+    eachMessage: async ({ topic, partition, message }) => {
+
+      if(topic.includes("resource")){
+        console.log("skipping " + topic)
+        return;
+      }
+
+      dd = message.value.toString();
+
+
+      // console.log(dd);
+      for( var d of dd.split(';') ){
+        if(d.length == 0){
+          continue;
+        }
+        try{
+          let j = JSON.parse(d)
+
+          // console.log("found:");
+          // console.log(j);        
+          if(topic.includes("domains")){
+            var idx = getIDX(datamodel.domains, j.name)
+            if (idx == -1){
+              datamodel.domains.push(j);
+            } else {
+              datamodel.domains.splice(idx, 1, j);
+            }
+          }       
+          else if(topic.includes("layers")){            
+            var idx = getIDX(datamodel.layers, j.name)
+            if (idx == -1){
+              datamodel.layers.push(j);
+            } else {
+              datamodel.layers.splice(idx, 1, j);
+            }
+          }    
+          else if(topic.includes("components")){
+            var idx = getIDX(datamodel.components, j.name)
+            if (idx == -1){
+              datamodel.components.push(j);
+            } else {
+              datamodel.components.splice(idx, 1, j);
+            }
+          }    
+          else if(topic.includes("connectors")){
+            if (("domainA" in j)==false){
+              var idx = getIDX(datamodel.translators, j.name)
+              if (idx == -1){
+                datamodel.translators.push(j);
+              } else {
+                datamodel.translators.splice(idx, 1, j);
+              }
+            } else {
+              var idx = getIDX(datamodel.projectors, j.name)
+              if (idx == -1){
+                datamodel.projectors.push(j);
+              } else {
+                datamodel.projectors.splice(idx, 1, j);
+              }
+            }
+            
+          }
+          else {
+            console.log("ignoring " + topic)
+          }
+          console.log("\nfound " + datamodel.domains.length + " domains")
+          console.log("found " + datamodel.layers.length + " layers")
+          console.log("found " + datamodel.components.length + " components")
+          console.log("found " + datamodel.translators.length + " translators")
+          console.log("found " + datamodel.projectors.length + " projectors\n")
+        }
+        catch(e){
+          console.log("failed to parse: ")
+          console.log(d)
+          console.log(e)
+        }
+      }
+    }
+  });
+
+
+}
+
+if(readDefinitionsFromDataPool == true) {
+  readDefFromDataPool()
+}
+
+async function registerSceSchema () {
+  try {
+    const schema = await readAVSCAsync("./src/Scenario_flat.avsc");
+    ret = await registry.register(schema);
+    console.log("registerSchema for SCE succ, id:"+ret.id);
+    sceSchemaID = ret.id;
+  } catch (e) {
+    console.log(e);
+  }
+};  
+async function registerResourceFileSchema () {
+  try {
+    const schema = await readAVSCAsync("./src/ResourceFile.avsc");
+    ret = await registry.register(schema);
+    console.log("registerSchema for ResourceFile succ, id:"+ret.id);
+    rfSchemaID = ret.id;
+  } catch (e) {
+    console.log(e);
+  }
+};
+async function registerSyncMsgSchema () {
+  try {
+    const schema = await readAVSCAsync("./src/SyncMsg.avsc");
+    ret = await registry.register(schema);
+    console.log("registerSchema for SyncMsg succ, id:"+ret.id);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+async function registerCtrlMsgSchema () {
+  try {
+    const schema = await readAVSCAsync("./src/CtrlMsg.avsc");
+    ret = await registry.register(schema);
+    console.log("registerSchema for CtrlMsg succ, id:"+ret.id);
+    ctrlSchemaID = ret.id;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const produceToKafka = async (registryId, topic, message) => {
+  message = cpy(message)
+  console.log("about to send somethin to "+topic)
+  await producer.connect();
+
+  encoded = await registry.encode(registryId, message).catch(error => { console.log('caught when encoding: ', error.message, ' on ', topic); console.dir(error); })
+  
+  outgoingMessage = {
+    key: "",
+    value: encoded
   };
 
-  var sceSchemaID = -1;
-  registerSceSchema();
-  var rfSchemaID = -1;
-  registerResourceFileSchema();
-  registerSyncMsgSchema();
-  var ctrlSchemaID = -1;
-  registerCtrlMsgSchema();
-  var orchTopic = "orchestration.simulation"
+  if(outgoingMessage.value != null){
+    console.log("encoded message!")
+    await producer.send({
+      topic: topic,
+      messages: [outgoingMessage],
+    }).catch(error => { console.log('caught when sending: ', error.message); console.dir(error);  });
+
+
+    console.log("done sending to "+topic)
+  } else {
+    console.log("could not send anything to "+topic)
+  }
+  await producer.disconnect();
+};
+
+var sceSchemaID = -1;
+registerSceSchema();
+var rfSchemaID = -1;
+registerResourceFileSchema();
+registerSyncMsgSchema();
+var ctrlSchemaID = -1;
+registerCtrlMsgSchema();
+var orchTopic = "orchestration.simulation"
 // }
 
 
@@ -772,7 +896,7 @@ app.post('/uploadResource', (req, res) => {
   console.dir(Payload)
 
   //add to catalog
-  resourceCatalogue.resourceList.push({'ID' : req.body.ID, 'Domain' : req.body.Domain, 'Layer' : req.body.Layer, 'Type' :  req.body.Type, 'Path' : Payload.path})
+  resourceCatalogue.resourceList.push({'ID' : req.body.ID, 'Domain' : req.body.domain, 'Layer' : req.body.Layer, 'Type' :  req.body.Type, 'Path' : Payload.path})
   
   fs.writeFileSync(resourceCataloguePath, JSON.stringify(resourceCatalogue));
 

@@ -164,7 +164,7 @@
             <b-form-input
               size="sm"
               :id="'input-dom' +bb.ID "
-              v-model="bb.Domain"
+              v-model="bb.domain"
              disabled
               class="mt-1"
             ></b-form-input>
@@ -359,7 +359,7 @@
             <b-form-input
               size="sm"
               :id="'input-dom' +translator.ID "
-              v-model="translator.Domain"
+              v-model="translator.domain"
              disabled
               class="mt-1"
             ></b-form-input>
@@ -532,7 +532,7 @@ export default {
     getDomainReferencesFromBackend(){
       //todo: get map file from backend
       console.log("getDomainReferencesFromBackend ")
-      for(const [key, value] of Object.entries(this.app.scee.DomainReferences)){
+      for(const [key, value] of Object.entries(this.app.scee.domainReferences)){
         console.log("getDomainReferencesFromBackend ")
         console.dir(key);
         console.dir(value);
@@ -550,15 +550,15 @@ export default {
       let avR = []
       for(const sim of this.getBBsFromSCE){
         if(instanceID==sim.ID){
-          avR = this.app.getAvailableResourcesForLayer(sim.Domain, sim.Layer);
+          avR = this.app.getAvailableResourcesForLayer(sim.domain, sim.layer);
         }
       }
       for(const translator of this.gettranslatorsFromSCE){
         if(instanceID==translator.ID){
-          let a = this.app.getAvailableResourcesForLayer(translator.Domain, translator.layerB);
-          let b = this.app.getAvailableResourcesForLayer(translator.Domain, translator.layerB);
+          let a = this.app.getAvailableResourcesForLayer(translator.domain, translator.layerB);
+          let b = this.app.getAvailableResourcesForLayer(translator.domain, translator.layerB);
           avR = a.concat(b)
-          avR = avR.concat(this.app.getAvailableResourcesForLayer(translator.Domain, "")) //domain references
+          avR = avR.concat(this.app.getAvailableResourcesForLayer(translator.domain, "")) //domain references
         }
       }
       console.log("availableResourcesForInstance for "+ instanceID)
@@ -584,9 +584,9 @@ export default {
     *******************  RESULTS *******************
     **************************************************/
      availableResultsForInstance(b) {
-      let bb = this.app.getBBDefinitionFromDataModel(b.Domain, b.Layer, b.Type)
+      let bb = this.app.getBBDefinitionFromDataModel(b.domain, b.layer, b.type)
       if (bb == undefined) {
-        console.log("could not find bb for:"+b.Domain + b.Layer + b.Type);
+        console.log("could not find bb for:"+b.domain + b.layer + b.type);
         return []
       }
       return bb.results                
@@ -617,7 +617,7 @@ export default {
     changeInvolvedDomains(d){
       console.log("changeInvolvedDomains");
       console.dir(d)
-      var oldDomainRefernces = JSON.parse(JSON.stringify(this.app.scee.DomainReferences));
+      var oldDomainRefernces = JSON.parse(JSON.stringify(this.app.scee.domainReferences));
       var newDomainReferences = {}
       for(let domain of d){
         console.log("domain: "+domain)
@@ -647,8 +647,8 @@ export default {
       return []
     },
     getProjectors() {
-      if (this.app.scee.Projectors != null)
-        return this.app.scee.Projectors;
+      if (this.app.scee.projectors != null)
+        return this.app.scee.projectors;
       return []
     },
     roadMaps(){

@@ -27,7 +27,6 @@
 /**
 * This class provides the generic orchestration interface description. 
 */
-//todo: split into layer (in)dependent parts
 
 namespace daceDS {
 class Orchestration {

@@ -51,8 +51,11 @@ This section allows managing resources, datamodels, and components.
                   <b-tab no-body title="Simulators"  class="h-100">
                      <GeneralSimulators />
                   </b-tab>
-                  <b-tab no-body title="translators"  class="h-100">
-                     <Generaltranslators />
+                  <b-tab no-body title="Translators"  class="h-100">
+                     <GeneralTranslators />
+                  </b-tab>
+                  <b-tab no-body title="Projectors"  class="h-100">
+                    
                   </b-tab>
                 </b-tabs>
               </b-card>
@@ -144,7 +147,7 @@ Here, you can design, run, and observe custom scenarios.
      <b-sidebar id="sidebar-info" title="Info" right shadow>
       <div class="px-3 py-2">
         <p>
-          This is a demo frontend for my PhD project.
+          This is a demo frontend for my PhD project "Data-Centric Distributed Simulation in the Traffic Domain".
         </p>
       </div>
     </b-sidebar>
@@ -173,7 +176,7 @@ import GeneralResourceManager from "./GeneralResourceManager.vue";
 import GeneralDomains from "./GeneralDomains.vue";
 import GeneralLayers from "./GeneralLayers.vue";
 import GeneralSimulators from "./GeneralSimulators.vue";
-import Generaltranslators from "./Generaltranslators.vue";
+import GeneralTranslators from "./GeneralTranslators.vue";
 import GeneralSideBar from "./GeneralSideBar.vue";
 import Catalog from "./Catalog.vue";
 export default {
@@ -193,7 +196,7 @@ export default {
     GeneralDomains,
     GeneralLayers,
     GeneralSimulators,
-    Generaltranslators,
+    GeneralTranslators,
     GeneralSideBar,
     Catalog,
   },
