@@ -78,7 +78,7 @@ public class MicroMacroTranslator<A,B> extends Translator<A, B> {
 		String demoScenario = "";
 
 		if(args.length == 3) {
-			demoScenario = "/home/guetlein/Code/git/daceDS/Scenario/Demo/Translation_micromacro.sce";
+			demoScenario = "daceDS/Scenario/Demo/Translation_micromacro.sce";
 		}
 
 		String layerA = "meso";
@@ -134,8 +134,8 @@ public class MicroMacroTranslator<A,B> extends Translator<A, B> {
 				((DomainHelperTraffic)domainHelperLayerB).initDomainReference(dRPath);
 			}
 		} else {
-			((DomainHelperTraffic)domainHelperLayerA).initDomainReference("/home/guetlein/Code/git/daceDS/Scenario/Demo/A9/A9.net.reference.xml");
-			((DomainHelperTraffic)domainHelperLayerB).initDomainReference("/home/guetlein/Code/git/daceDS/Scenario/Demo/A9/A9.net.reference.xml");
+			((DomainHelperTraffic)domainHelperLayerA).initDomainReference("daceDS/Scenario/Demo/A9/A9.net.reference.xml");
+			((DomainHelperTraffic)domainHelperLayerB).initDomainReference("daceDS/Scenario/Demo/A9/A9.net.reference.xml");
 		}
 		
 		((DomainHelperTraffic)domainHelperLayerA).setInternalResponsibilitiesForMeso();

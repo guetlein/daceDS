@@ -77,7 +77,7 @@ public class MesoMacroTranslator<A,B> extends Translator<A, B> {
 		String demoScenario = "";
 
 		if(args.length == 3) {
-			demoScenario = "/home/guetlein/Code/git/daceDS/Scenario/Demo/Translation_mesomacro.sce";
+			demoScenario = "daceDS/Scenario/Demo/Translation_mesomacro.sce";
 		}
 
 		String layerA = "meso";
@@ -128,8 +128,8 @@ public class MesoMacroTranslator<A,B> extends Translator<A, B> {
 				((DomainHelperTraffic)domainHelperLayerB).initMesoMap(mesoMapPath);
 			}
 		} else {
-			((DomainHelperTraffic)domainHelperLayerA).initMesoMap("/home/guetlein/Code/git/daceDS/Szenario/matsim/Town01_extended.network.xml");
-			((DomainHelperTraffic)domainHelperLayerB).initMesoMap("/home/guetlein/Code/git/daceDS/Szenario/matsim/Town01_extended.network.xml");
+			((DomainHelperTraffic)domainHelperLayerA).initMesoMap("daceDS/Szenario/matsim/Town01_extended.network.xml");
+			((DomainHelperTraffic)domainHelperLayerB).initMesoMap("daceDS/Szenario/matsim/Town01_extended.network.xml");
 		}
 		
 		((DomainHelperTraffic)domainHelperLayerA).setInternalResponsibilitiesForMeso();

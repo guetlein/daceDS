@@ -148,7 +148,7 @@ public class MatsimWrapper extends Simulator<Meso> implements MobsimBeforeSimSte
 			simulator = orchestrationHandler.getSimulator();
 			configPath = MatsimAPI.createDirAndConfig(scenario, simulator, orchestrationHandler);
 		} else {
-			configPath = "/home/guetlein/Code/git/daceDS/Scenario/Demo/Line_Matsim/matsim.cfg";
+			configPath = "daceDS/Scenario/Demo/Line_Matsim/matsim.cfg"; //for testing
 //			configPath = "/tmp/SimulationService/1649847374863/matsim0/resource/matsim.matsimcfg";
 			System.out.println("DEMO MODE!!! USING " + configPath + " and " + demoScenario);
 			scenario = ScenarioUtils.getDemoScenario(demoScenario);

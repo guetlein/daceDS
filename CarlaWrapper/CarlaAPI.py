@@ -30,7 +30,7 @@ try:
 except IndexError:
     pass
 try:
-    sys.path.append('/home/guetlein/Code/Extern/carla/PythonAPI/carla')
+    sys.path.append('Extern/carla/PythonAPI/carla')
 except IndexError:
     pass
 

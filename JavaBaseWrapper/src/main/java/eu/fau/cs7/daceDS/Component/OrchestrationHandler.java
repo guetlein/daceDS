@@ -337,7 +337,7 @@ public class OrchestrationHandler implements ConsumerCallbackImplKafka  {
 						String callString = "";
 						//todo: use your fs
 						if(System.getProperty("os.name").toLowerCase().contains("windows")){
-							callString = "cmd /c start \"\" retrieveFileFromDisk.bat  " + reference.replace("file:///home/guetlein", "E:").replace("/", "\\") + " " + dest.toString();
+							callString = "cmd /c start \"\" retrieveFileFromDisk.bat  " + reference.replace("file:///daceDS", "E:").replace("/", "\\") + " " + dest.toString();
 						}
 						else{
 							callString = "./retrieveFileFromDisk.sh " + reference + " " + dest.toString();
