@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>eu.fau.cs7.daceDS.Projectors</groupId>
+  <artifactId>JavaProjectors</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <properties>
+	  <java.version>12</java.version>		
+	  <maven.compiler.source>${java.version}</maven.compiler.source>
+	  <maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
+	
+	<dependencies>
+			<dependency>
+				<groupId>eu.fau.cs7.daceDS</groupId>
+				<artifactId>JavaBaseWrapper</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+	</dependencies>
+	 <build>
+	<plugins>
+	<plugin>
+		  <artifactId>maven-assembly-plugin</artifactId>
+		  <executions>
+		  
+		    <execution>
+		      <id>make-assembly1</id> 
+		      <phase>package</phase> 
+		      <goals>
+		        <goal>single</goal>
+		      </goals>
+		      <configuration>
+			       <descriptorRefs>
+	              	<descriptorRef>jar-with-dependencies</descriptorRef>
+	              </descriptorRefs>
+	              <archive>
+	                <manifest>
+	                  <mainClass>eu.fau.cs7.daceDS.Projectors.V2XProjector</mainClass>
+	                </manifest>
+	              </archive>
+
+		      <appendAssemblyId>false</appendAssemblyId>
+              <finalName>V2XProjector</finalName>	
+            </configuration>
+		    </execution>
+		    </executions>
+		    </plugin>
+    </plugins>
+    </build>
+</project>
