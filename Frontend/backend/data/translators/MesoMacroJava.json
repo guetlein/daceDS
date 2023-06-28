@@ -1,0 +1,9 @@
+{
+    "name": "MesoMacroJava",
+    "domain": "traffic",
+    "layer_A" : "meso",
+    "layer_B" : "macro",
+    "resources" : ["RoadMap"],
+    "version" : 1,
+    "description" : "This is a Java based translator that connects the macro and the meso layer of the traffic domain. As this implies the coupling of a continous and a discrete regime, for the direction from macro to meso, meso tuples are sampled by Poisson Arrival Processes based on continous macroscopic flow data."
+}

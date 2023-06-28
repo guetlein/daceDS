@@ -1,0 +1,197 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Layer",
+    "description": "Layer description",
+    "type": "object",
+    "definitions": {
+        "compound": {
+            "type": "object",
+            "required": [
+                "name",
+                "key",
+                "isGettable",
+                "isObservable",
+                "isPersistent",
+                "isSettable"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The compound's name",
+                    "type": "string"
+                },
+                "key": {
+                    "description": "The compound's key",
+                    "$ref": "#/definitions/primitive"
+                },
+                "compounds": {
+                    "description": "Embedded compound structures",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/compound"
+                    }
+                },
+                "methods": {
+                    "description": "Interface extensions",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/method"
+                    }
+                },
+                "primitives": {
+                    "description": "Embedded primitive attributes",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/primitive"
+                    }
+                },
+                "isGettable": {
+                    "description": "Is there a getter?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isObservable": {
+                    "description": "Is there an observer?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isPersistent": {
+                    "description": "Are contents persistent?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isReferenceRelated": {
+                    "description": "Is this related to the domain reference?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isSettable": {
+                    "description": "Is there a setter?",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "method": {
+            "type": "object",
+            "required": [
+                "name",
+                "input",
+                "output"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The attribute's name",
+                    "type": "string"
+                },
+                "input": {
+                    "description": "A list of attributes",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "output": {
+                    "description": "Return type of method",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A further description",
+                    "type": "string"
+                }
+            }
+        },
+        "primitive": {
+            "type": "object",
+            "required": [
+                "name",
+                "type",
+                "isGettable",
+                "isSettable",
+                "isObservable"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The attribute's name",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The attribute's type, e.g. 'double'. This has nothing to do with json types",
+                    "type": "string"
+                },
+                "isGettable": {
+                    "description": "Will there be a getter?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isObservable": {
+                    "description": "Will there be an observer?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isReferenceRelated": {
+                    "description": "Is this related to the domain reference?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isSettable": {
+                    "description": "Will there be a setter?",
+                    "type": "boolean",
+                    "default": false
+                },
+                "unit": {
+                    "description": "The attribute's unit e.g. ms",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A further description",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "properties": {
+        "name": {
+            "description": "The layer's name",
+            "type": "string"
+        },
+        "domain": {
+            "description": "The layer's domain",
+            "type": "string"
+        },
+        "version": {
+            "description": "Version of the layer definition",
+            "type": "number"
+        },
+        "ndm": {
+            "description": "The layer's native data model",
+            "$ref": "#/definitions/compound"
+        },
+        "compounds": {
+            "description": "The layer's compound structures",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/compound"
+            }
+        },
+        "methods": {
+            "description": "Interface extensions",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/method"
+            }
+        },
+        "primitives": {
+            "description": "The layer's primitive attributes",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/primitive"
+            }
+        }
+    },
+    "required": [
+        "name",
+        "domain",
+        "ndm",
+        "version"
+    ]
+}

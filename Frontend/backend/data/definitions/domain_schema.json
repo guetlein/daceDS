@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Domain",
+    "description": "Domain schema definition",
+    "type": "object",
+    "definitions": {
+            "properties": {
+                "name": {
+                    "description": "The compound's name",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The compound's key",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Embedded compound structures",
+                    "type": "integer"
+                },
+                "reference": {
+                    "description": "Interface extensions",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/method"
+                    }
+                }
+            }
+        },
+        "method": {
+            "type": "object",
+            "required": [
+                "name",
+                "input",
+                "output"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The attribute's name",
+                    "type": "string"
+                },
+                "input": {
+                    "description": "A list of attributes",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "output": {
+                    "description": "Return type of method",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "A further description",
+                    "type": "string"
+                }
+            }
+        },
+    "required": [
+        "name",
+        "domain",
+        "ndm",
+        "version"
+    ]
+}

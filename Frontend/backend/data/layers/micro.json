@@ -1,0 +1,262 @@
+{
+    "name": "micro",
+    "domain": "traffic",
+    "version": 1,
+    "ndm": {
+        "name": "vehicle",
+        "isPersistent": false,
+        "isGettable": true,
+        "isSettable": false,
+        "isObservable": true,
+        "compounds": [],
+        "key": {
+            "name": "vehicleID",
+            "type": "string",
+            "isGettable": false,
+            "isSettable": false,
+            "isObservable": false
+        },
+        "methods": [],
+        "primitives": [
+            {
+                "name": "acceleration",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "m/s2",
+                "description" : "will lead to: interaction[...]micro.vehicle.acceleration.get, interaction[...]micro.vehicle.acceleration.ret, provision[...]micro.vehicle.acceleration"
+            },
+            {
+                "name": "angle",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "deg"
+            },
+            {
+                "name": "edge",
+                "type": "string",
+                "isGettable": true,
+                "isReferenceRelated": true,
+                "isSettable": true,
+                "isObservable": true
+            },
+            {
+                "name": "lane",
+                "type": "int",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true
+            },
+            {
+                "name": "position",
+                "type": "Vec3",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "m,m,m"
+            },
+            {
+                "name": "positionEdge",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": true,
+                "unit": "m",
+                "description": "distance to beginning of current edge"
+            },
+            {
+                "name": "route",
+                "type": "list_string",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": false
+            },
+            {
+                "name": "slope",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": true,
+                "unit": "deg"
+            },
+            {
+                "name": "speed",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "m/s"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": false
+            }
+        ]
+    },
+    "compounds": [
+        {
+            "name": "edge",
+            "isReferenceRelated": true,
+            "isPersistent": false,
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": true,
+            "compounds": [     ],
+            "key": {
+                "name": "edgeID",
+                "type": "string",
+                "isGettable": false,
+                "isSettable": false,
+                "isObservable": false
+            },
+            "methods": [
+                {
+                    "name": "setAllowedTypes",
+                    "input": ["integer", "list_string"],
+                    "output": "void"
+                },
+                {
+                    "name": "getAllowedTypes",
+                    "input": ["integer"],
+                    "output": "list_string"
+                },
+                {
+                    "name": "getLaneNumber",
+                    "input": [],
+                    "output": "integer"
+                },
+                {
+                    "name": "getLaneGradient",
+                    "input": ["integer"],
+                    "output": "double"
+                },
+                {
+                    "name": "getLaneLength",
+                    "input": ["integer"],
+                    "output": "double"
+                },
+                {
+                    "name": "getLaneWidth",
+                    "input": ["integer"],
+                    "output": "double"
+                }
+            ],
+            "primitives": [
+                {
+                    "name": "emission",
+                    "type": "string",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true,
+                    "description" : "just a string with some calculated emission numbers"
+                },
+                {
+                    "name": "flow",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "occupancy",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "speed",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true,
+                    "unit": "m/s"
+                },
+                {
+                    "name": "vehicles",
+                    "type": "list_vehicle",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "vehicleIDs",
+                    "type": "list_string",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                }
+            ]
+        },{
+            "name": "detector",
+            "isPersistent": true,
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": true,
+            "compounds": [],
+            "key": {
+                "name": "detectorID",
+                "type": "string",
+                "isGettable": false,
+                "isSettable": false,
+                "isObservable": false
+            },
+            "methods": [],
+            "primitives": [
+                {
+                    "name": "values",
+                    "type": "map_[boolean,double,integer,string]",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true,
+                    "description" : "detector's values, very generic because no further knowledge, key is det.attribute name, value is det.value"
+                }]
+        }
+    ],
+    "methods": [
+        {
+            "name": "exportSim",
+            "input": [],
+            "output": "void"
+        }
+    ],
+    "primitives": [
+        {
+            "name": "simTime",
+            "type": "long",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": true,
+            "unit": "ms"
+        },
+        {
+            "name": "boundaries",
+            "type": "Vec4",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false,
+            "unit": "m,m,m,m"
+        },
+        {
+            "name": "offset",
+            "type": "Vec2",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false,
+            "unit": "m,m"
+        },
+        {
+            "name": "roadMap",
+            "type": "string",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false
+        }
+    ]
+}

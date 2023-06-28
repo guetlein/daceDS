@@ -1,0 +1,13 @@
+{
+    "name": "VisumWrapper",
+    "domain": "traffic",
+    "layer": "macro",
+    "version": 1,
+    "results": [],
+    "resourceTypes" : [
+        "Version"
+    ],
+    "availableStepsizes" : [300000,900000,1800000,3600000],
+    "continous" : true,
+    "enabled" : true
+}

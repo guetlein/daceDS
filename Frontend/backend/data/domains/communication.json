@@ -1,0 +1,8 @@
+{
+    "name": "communication",
+    "domain": "communication",
+    "version": 1,
+    "description" : "this domain covers all simulators that are related to communication",
+    "reference": "tbd",
+    "referenceDescription": "tbd"
+}

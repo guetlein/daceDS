@@ -1,0 +1,15 @@
+{
+    "name": "SumoWrapper",
+    "domain": "traffic",
+    "layer": "micro",
+    "version": 1,
+    "results": ["fcd-output", "statistic-output", "summary"],
+    "resourceTypes" : [
+        "RoadMap",
+        "Additional",
+        "Traffic"
+    ]    ,
+    "availableStepsizes" : [1,10,100,1000],
+    "continous" : false,
+    "enabled" : true
+}

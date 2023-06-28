@@ -1,0 +1,9 @@
+{
+    "name": "MicroMesoJava",
+    "version" : 1,
+    "domain": "traffic",
+    "layer_A" : "micro",
+    "layer_B" : "meso",
+    "resources" : ["RoadMap"],
+    "description" : ""
+}

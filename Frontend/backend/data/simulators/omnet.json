@@ -1,0 +1,13 @@
+{
+    "name": "OMNeTppWrapper",
+    "domain": "communication",
+    "layer": "802.11p_PHY",
+    "version": 1,
+    "results": [],
+    "resourceTypes" : [
+        "config"
+    ],
+    "availableStepsizes" : [],
+    "continous" : false,
+    "enabled" : false
+}

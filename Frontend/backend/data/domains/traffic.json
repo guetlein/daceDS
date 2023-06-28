@@ -1,0 +1,10 @@
+{
+    "name": "traffic",
+    "domain": "traffic",
+    "version": 1,
+    "description" : "this domain covers all simulators that are related to traffic and vehicles",
+    "reference": {
+        "description": "different tools use various techniques to model connections between nodes (lanes? unidirectional? ...) nodes are better suited to be understood within the different paradigms than edges",
+        "data" : [ {"name" : "node", "type" : "string"}, {"name" : "pos", "type" : "vec3"}]
+    }
+}

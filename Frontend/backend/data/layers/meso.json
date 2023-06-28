@@ -1,0 +1,155 @@
+{
+    "name": "meso",
+    "domain": "traffic",
+    "version": 1,
+    "ndm": {
+        "name": "vehicle",
+        "isPersistent": false,
+        "isGettable": true,
+        "isSettable": false,
+        "isObservable": true,
+        "compounds": [],
+        "key": {
+            "name": "vehicleID",
+            "type": "string",
+            "isGettable": false,
+            "isSettable": false,
+            "isObservable": false
+        },
+        "methods": [],
+        "primitives": [
+            {
+                "name": "edge",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true
+            },
+            {
+                "name": "lane",
+                "type": "int",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true
+            },
+            {
+                "name": "route",
+                "type": "list_string",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": false
+            },
+            {
+                "name": "speed",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "m/s"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": false
+            }
+        ]
+    },
+    "compounds": [
+        {
+            "name": "edge",
+            "isPersistent": false,
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": true,
+            "compounds": [     ],
+            "key": {
+                "name": "edgeID",
+                "type": "string",
+                "isGettable": false,
+                "isSettable": false,
+                "isObservable": false
+            },
+            "methods": [],
+            "primitives": [
+                {
+                    "name": "flow",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "occupancy",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "speed",
+                    "type": "double",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true,
+                    "unit": "m/s"
+                },
+                {
+                    "name": "vehicles",
+                    "type": "list_vehicle",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                },
+                {
+                    "name": "vehicleIDs",
+                    "type": "list_string",
+                    "isGettable": true,
+                    "isSettable": false,
+                    "isObservable": true
+                }
+            ]
+        }
+    ],
+    "methods": [
+        {
+            "name": "exportSim",
+            "input": [],
+            "output": "void"
+        }
+    ],
+    "primitives": [
+        {
+            "name": "simTime",
+            "type": "long",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": true,
+            "unit": "ms"
+        },
+        {
+            "name": "boundaries",
+            "type": "Vec4",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false,
+            "unit": "m,m,m,m"
+        },
+        {
+            "name": "offset",
+            "type": "Vec2",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false,
+            "unit": "m,m"
+        },
+        {
+            "name": "roadMap",
+            "type": "string",
+            "isGettable": true,
+            "isSettable": false,
+            "isObservable": false
+        }
+    ]
+}

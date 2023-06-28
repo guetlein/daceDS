@@ -1,0 +1,15 @@
+{
+    "name": "CarlaWrapper",
+    "domain": "traffic",
+    "layer": "submicro",
+    "version": 1,
+    "results": [],
+    "resourceTypes" : [
+        "roadMap",
+        "additional",
+        "traffic"
+    ]    ,
+    "availableStepsizes" : [1,10,100,1000],
+    "continous" : false,
+    "enabled" : true
+}

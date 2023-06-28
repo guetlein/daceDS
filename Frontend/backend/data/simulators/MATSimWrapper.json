@@ -1,0 +1,14 @@
+{
+    "name": "MATSimWrapper",
+    "domain": "traffic",
+    "layer": "meso",
+    "version": 1,
+    "results": [   "modalsplit-output"],
+    "resourceTypes" : [
+        "RoadMap",
+        "Traffic"
+    ],
+    "availableStepsizes" : [1000,10000],
+    "continous" : false,
+    "enabled" : true
+}

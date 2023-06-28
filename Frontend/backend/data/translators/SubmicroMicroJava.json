@@ -1,0 +1,9 @@
+{
+    "name": "SubmicroMicroJava",
+    "version" : 1,
+    "domain": "traffic",
+    "layer_A" : "submicro",
+    "layer_B" : "micro",
+    "resources" : ["RoadMap"],
+    "description" : ""
+}

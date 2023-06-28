@@ -1,0 +1,100 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Block",
+    "description": "Block description",
+    "type": "object",
+    "definitions": {
+        "properties": {
+            "name": {
+                "description": "The block's name",
+                "type": "string"
+            },
+            "version": {
+                "description": "The block's version",
+                "type": "integer"
+            },
+            "domain": {
+                "description": "The block's domain",
+                "type": "string"
+            },
+            "layer": {
+                "description": "The block's layer",
+                "type": "string"
+            },
+            "parameters": {
+                "description": "The block's layer",
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/parameter"
+                }
+            },                
+            "resources": {
+                "description": "A list of resources",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },            
+            "results": {
+                "description": "A list of results",
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/result"
+                }
+            },
+            "exe": {
+                "description": "The block's exe",
+                "type": "string"
+            }
+        },
+
+        "result": {
+            "type": "object",
+            "required": [
+                "name",
+                "parameters"
+            ],
+            "properties": {
+                "name": {
+                    "description": "The result's name",
+                    "type": "string"
+                },
+                "parameters": {
+                    "description": "The result's parameters",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+
+        "parameter": {
+            "type": "object",
+            "required": [
+                "name",
+                "mandatory",
+                "values"
+            ],
+            "properties": {
+                "name": {
+                "description": "The parameter's name",
+                "type": "string"
+                },
+                "mandatory": {
+                    "type": "boolean"
+                }, 
+                "values": {
+                    "description": "A list of possible values",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+        
+        
+    }
+}
+

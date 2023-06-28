@@ -1,0 +1,60 @@
+{
+    "name": "macro",
+    "domain": "traffic",
+    "version": 1,
+    "ndm": {
+        "name": "edge",
+        "isPersistent": false,
+        "isGettable": true,
+        "isSettable": false,
+        "isObservable": true,
+        "compounds": [],
+        "key": {
+            "name": "edgeID",
+            "type": "string",
+            "isGettable": false,
+            "isSettable": false,
+            "isObservable": false
+        },
+        "methods": [],
+        "primitives": [
+            {
+                "name": "speed",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "m/s"
+            },
+            {
+                "name": "flow",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "veh/h"
+            },
+            {
+                "name": "occupation",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": true,
+                "unit": "veh/m"
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": false
+            }
+        ]
+    },
+    "compounds": [
+    ],
+    "methods": [
+    ],
+    "primitives": [
+    ]
+}

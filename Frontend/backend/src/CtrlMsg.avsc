@@ -1,0 +1,8 @@
+{ "type": "record",
+ 	"namespace": "eu.fau.cs7.daceDS.datamodel",
+ 	"name": "CtrlMsg",
+ 	"fields": [
+		                        	{	"name" : "Sender", "type": "string"},
+		                        	{   "name": "Command", "type": "string"}
+              ]
+}    

@@ -1,0 +1,60 @@
+{
+    "name": "802.11p_PHY",
+    "domain": "communication",
+    "version": 1,
+    "ndm": {
+        "name": "message",
+        "isPersistent": false,
+        "isGettable": true,
+        "isSettable": false,
+        "isObservable": true,
+        "compounds": [],
+        "key": {
+            "name": "messageID",
+            "type": "string",
+            "isGettable": false,
+            "isSettable": false,
+            "isObservable": false
+        },
+        "methods": [],
+        "primitives": [
+            {
+                "name": "transmissionPower",
+                "type": "double",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": false,
+                "unit": "mW"
+            },
+            {
+                "name": "origin",
+                "type": "vec3",
+                "isGettable": true,
+                "isSettable": false,
+                "isObservable": false,
+                "unit": "m"
+            },
+            {
+                "name": "header",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": false,
+                "unit": "veh/m"
+            },
+            {
+                "name": "payload",
+                "type": "string",
+                "isGettable": true,
+                "isSettable": true,
+                "isObservable": false
+            }
+        ]
+    },
+    "compounds": [
+    ],
+    "methods": [
+    ],
+    "primitives": [
+    ]
+}
